@@ -29,38 +29,151 @@ class vector
 
     private:
 
-        T *                                 _data;          // points to the first element
-        typename allocator_type::size_type  _capacity;      // maximum capacity
-        typename allocator_type::size_type  _size;          // current size
-        allocator_type                      _allocator;     // allocator object used to allocate memory
+        value_type *    _data;          // points to the first element
+        size_type       _capacity;      // maximum capacity
+        size_type       _size;          // current size
+        allocator_type  _allocator;     // allocator object used to allocate memory
 
     public:
-    
+        /*  
+            ================
+            MEMBER FUNCTIONS
+            ================
+        */
+        
         /* --- CONSTRUCTORS --- */
         // 1. default
         explicit vector()
         {
-           this->_data = _allocator.allocate(0);
-           this->_capacity = 0;
-           this->_size = 0; 
+            this->_data = this->_allocator.allocate(0);
+            this->_capacity = 0;
+            this->_size = 0; 
         }
 
         // 2. fill
         explicit vector(size_type n, const value_type & val = value_type())
         {
-            this->_data = _allocator.allocate(n);
+            this->_data = this->_allocator.allocate(n);
             this->_capacity = n;
-            this->_size = 0;
+            this->_size = n;
             for (size_type i = 0; i < n ; i++)
                 this->_allocator.construct(_data + i, val);
         }
 
         // 3. range (TO DO)
-        // 4. copy  (TO DO)
-
+        // 4. copy
         vector(const vector & x)
         {
+            size_type   x_size = x.size();
 
+            this->_data = this->_allocator.allocate(x_size);
+            this->_capacity = x_size;
+            this->_size = x_size;
+            for (size_type i = 0 ; i < x_size ; i++)
+            {
+                this->_allocator.construct(this->_data + i, x[i]);
+            }
+        }
+
+        /* --- DESTRUCTOR --- */
+        ~vector()
+        {
+            this->clear();
+            this->_allocator.deallocate(this->_data, this->_capacity);
+        }
+
+        /* --- OPERATOR= --- */
+        vector & operator=(const vector & x)
+        {
+            // this->_capacity = x.size(), not x.capacity() if x.size() > this->_size
+            if (x.size() > this->_size)
+            {
+                this->clear();
+                this->_allocator.deallocate(this->_data, this->_capacity);
+                this->_data = this->_allocator.allocate(x.size());
+                this->_capacity = x.size();
+            }
+            this->_size = x.size();
+            for (size_type i = 0; i < x.size() ; i++)
+            {
+                this->_allocator.construct(this->_data + i, x[i]);
+            }
+            return (*this);
+        }
+
+        /* --- ITERATORS --- */
+
+        /* --- CAPACITY --- */
+        size_type size() const
+        {
+            return (this->_size);
+        }
+
+        size_type max_size() const
+        {
+            return (this->_allocator.max_size());
+        }
+
+        void resize(size_type n, value_type val = value_type())
+        {
+            if (n < this->_size)
+            {
+                // remove & destroy elements after n (not deallocate)
+                for (size_type i = n ; i < this->_size ; i++)
+                    this->_allocator.destroy(this->_data + i);
+                this->_size = n;
+            }
+            else if (n <= this->_capacity && n > this->_size)
+            {
+                // insert at the end elements
+                for (size_type i = this->_size; i < n; i++)
+                    this->_allocator.construct(this->_data + i, val);
+                this->_size = n;
+            }
+            else if (n > this->_capacity && n > this->_size)
+            {
+                // reallocate new array
+                value_type  *new_array = this->_allocator.allocate(n);
+                // copy contents
+                for (size_type i = 0; i < this->_size; i++)
+                    this->_allocator.construct(new_array + i, this->_data[i]);
+                // insert new elements
+                for (size_type i = this->_size; i < n; i++)
+                    this->_allocator.construct(new_array + i, val);
+                // destroy old array
+                this->clear();
+                // deallocate old array
+                this->_allocator.deallocate(this->_data, this->_size);
+                this->_data = new_array;
+                // change current size and capacity
+                this->_size = n;
+                this->_capacity = n;
+            }
+        }
+
+        size_type capacity() const
+        {
+            return (this->_capacity);
+        }
+
+        bool empty() const
+        {
+            return (this->_size == 0);
+        }
+
+        void reserve(size_type n)
+        {
+            if (n > this->_capacity)
+            {
+                value_type  *new_array = this->_allocator.allocate(n);
+
+                for (size_type i = 0; i < this->_size; i++)
+                    this->_allocator.construct(new_array + i, this->_data[i]);
+                this->clear();
+                this->_allocator.deallocate(this->_data, this->_size);
+                this->_data = new_array;
+                this->_capacity = n;
+            }
         }
 
         /* --- ELEMENT ACCESS --- */
@@ -80,15 +193,27 @@ class vector
         {
             if (n >= this->_size || n < 0)
                 throw std::out_of_range("Exception: out of range access of container");
-            return (*(this->_data) + n);
+            return (*(this->_data + n));
         }
 
         const_reference at (size_type n) const
         {
             if (n >= this->_size || n < 0)
                 throw std::out_of_range("Exception: out of range access of container");
-            return (*(this->_data) + n);
+            return (*(this->_data + n));
         }
+
+        /* --- MODIFIERS --- */
+
+        void    clear()
+        {
+            for (size_t i = 0; i < this->_size ; i++)
+                this->_allocator.destroy(this->_data + i);
+            this->_size = 0;
+        }
+
+        /* --- ALLOCATOR --- */
+
 };
 
 #endif
