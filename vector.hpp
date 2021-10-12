@@ -4,6 +4,7 @@
 #include <memory>
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
 
 /*
     std::allocator : its methods are used for
@@ -61,6 +62,8 @@ class vector
         }
 
         // 3. range (TO DO)
+        template <class InputIterator>
+        
         // 4. copy
         vector(const vector & x)
         {
@@ -86,7 +89,7 @@ class vector
         vector & operator=(const vector & x)
         {
             // this->_capacity = x.size(), not x.capacity() if x.size() > this->_size
-            if (x.size() > this->_size)
+            if (x.size() > this->_capacity)
             {
                 this->clear();
                 this->_allocator.deallocate(this->_data, this->_capacity);
@@ -203,7 +206,53 @@ class vector
             return (*(this->_data + n));
         }
 
+        // 3. front
+        reference front()
+        {
+            return (*(this->_data));
+        }
+
+        const_reference front() const
+        {
+            return (*(this->_data));
+        }
+
+        // 4. back
+        reference back()
+        {
+            return (*(this->_data + (this->_size - 1)));
+        }
+
+        const_reference back() const
+        {
+            return (*(this->_data + (this->_size - 1)));
+        }
+
         /* --- MODIFIERS --- */
+        template <class InputIterator>
+        void assign(InputIterator first, InputIterator last)
+        {
+            long    distance = std::distance(first, last);
+            int     i;
+
+            this->clear();
+            // reallocation only if new vector size > current vector capacity
+            if (static_cast<size_type>(distance) > this->_capacity)
+            {
+                this->_allocator.deallocate(this->_data, this->_capacity);
+                this->_data = this->_allocator.allocate(distance);
+                this->_capacity = distance;
+            }
+            // Remplacer (construire)
+            i = 0;
+            while (first != last)
+            {
+                this->_allocator.construct(this->_data + i, *first);
+                first++;
+                i++;
+            }
+            this->_size = distance;
+        }
 
         void    clear()
         {

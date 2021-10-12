@@ -21,4 +21,13 @@ int main(void)
     v = v2;
     std::cout << "v capacity " << v.capacity() << std::endl;
     display_vector(v);
+
+    int *tab = new int [5];
+
+    for (int i = 0; i < 5 ; i++)
+        tab[i] = 0;
+
+    std::cout << "distance: " << std::distance(tab+5, tab) << std::endl;
+    
+    return (0);
 }
