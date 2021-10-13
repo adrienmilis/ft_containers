@@ -1,8 +1,9 @@
 #include "vector.hpp"
 #include <iostream>
+#include <vector>
 
 template<typename T>
-void    display_vector(const vector<T> & v)
+void    display_vector(const ft::vector<T> & v)
 {
     if (v.size() == 0)
     {
@@ -23,17 +24,17 @@ int main(void)
     std::cout << "CONSTRUCTORS" << std::endl;
     std::cout << "============" << std::endl << std::endl;
     std::cout << "--- 1. Default constructor ---" << std::endl;
-    vector<int> v;
+    ft::vector<int> v;
     display_vector(v);
     std::cout << std::endl;
     std::cout << "--- 2. Fill constructor ---" << std::endl;
-    vector<int> v2(5, 10);
+    ft::vector<int> v2(5, 10);
     display_vector(v2);
     std::cout << std::endl;
     std::cout << "--- 3. Range constructor ---" << std::endl; // TO DO
     std::cout << std::endl;
     std::cout << "--- 4. Copy constructor ---" << std::endl;
-    vector<int> v4(v2);
+    ft::vector<int> v4(v2);
     display_vector(v4);
 
     std::cout << std::endl;
@@ -104,7 +105,7 @@ int main(void)
     std::cout << std::endl;
 
     std::cout << "--- 2. at ---" << std::endl;
-    const   vector<int> const_v(5, 100);
+    const   ft::vector<int> const_v(5, 100);
 
     std::cout << "Const vector: ";
     display_vector(const_v);
@@ -148,6 +149,13 @@ int main(void)
     v2.assign(myints, myints + 3);
     std::cout << "After assign:" << std::endl;
     display_vector(v2);
+    std::vector<int> std_v(10, 100);
+    std::vector<int>::iterator   it = std_v.begin();
+    std::vector<int>::iterator   ite = std_v.end();
+    std::cout << "After assign with iterators: " << std::endl;
+    v2.assign(it, ite - 1);
+    display_vector(v2);
+
     // TO DO: ASSIGN WITH OWN ITERATORS
 
     std::cout << std::endl;
