@@ -1,4 +1,5 @@
 #include "vector.hpp"
+#include "utils.hpp"
 #include <iostream>
 #include <vector>
 
@@ -26,12 +27,24 @@ int main(void)
     std::cout << "--- 1. Default constructor ---" << std::endl;
     ft::vector<int> v;
     display_vector(v);
+
     std::cout << std::endl;
     std::cout << "--- 2. Fill constructor ---" << std::endl;
     ft::vector<int> v2(5, 10);
     display_vector(v2);
+
     std::cout << std::endl;
-    std::cout << "--- 3. Range constructor ---" << std::endl; // TO DO
+    std::cout << "--- 3. Range constructor ---" << std::endl;
+    int myints[] = {32, 47, 88};
+    ft::vector<int> v3(myints, myints+3);
+    display_vector(v3);
+
+    std::vector<int> std_v0(10, 100);
+    std::vector<int>::iterator   it = std_v0.begin();
+    std::vector<int>::iterator   ite = std_v0.end();
+    ft::vector<int>  v3_2(it, ite - 1);
+    display_vector(v3_2);
+
     std::cout << std::endl;
     std::cout << "--- 4. Copy constructor ---" << std::endl;
     ft::vector<int> v4(v2);
@@ -145,15 +158,15 @@ int main(void)
     std::cout << "--- 1. Assign ---" << std::endl;
     std::cout << "Before assign:" << std::endl;
     display_vector(v2);
-    int myints[] = {1, 2, 3};
-    v2.assign(myints, myints + 3);
+    int myints2[] = {1, 2, 3};
+    v2.assign(myints2, myints2 + 3);
     std::cout << "After assign:" << std::endl;
     display_vector(v2);
     std::vector<int> std_v(10, 100);
-    std::vector<int>::iterator   it = std_v.begin();
-    std::vector<int>::iterator   ite = std_v.end();
+    std::vector<int>::iterator   it2 = std_v.begin();
+    std::vector<int>::iterator   ite2 = std_v.end();
     std::cout << "After assign with iterators: " << std::endl;
-    v2.assign(it, ite - 1);
+    v2.assign(it2, ite2 - 1);
     display_vector(v2);
 
     // TO DO: ASSIGN WITH OWN ITERATORS

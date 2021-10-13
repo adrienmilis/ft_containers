@@ -5,7 +5,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <algorithm>
-// #include <type_traits> // remove
 #include "utils.hpp"
 
 /*
@@ -21,14 +20,16 @@ namespace ft
     template< class T, class Alloc = std::allocator<T> >
     class vector
     {
-        typedef T       value_type;
-        typedef Alloc   allocator_type;
-        typedef size_t  size_type;
+        public:
 
-        typedef typename allocator_type::reference          reference;
-        typedef typename allocator_type::const_reference    const_reference;
-        typedef typename allocator_type::pointer            pointer;
-        typedef typename allocator_type::const_pointer      const_pointer;
+            typedef T       value_type;
+            typedef Alloc   allocator_type;
+            typedef size_t  size_type;
+
+            typedef typename allocator_type::reference          reference;
+            typedef typename allocator_type::const_reference    const_reference;
+            typedef typename allocator_type::pointer            pointer;
+            typedef typename allocator_type::const_pointer      const_pointer;
 
         // iterators a ajouter
 
@@ -66,17 +67,19 @@ namespace ft
                     this->_allocator.construct(_data + i, val);
             }
 
-            // 3. range (TO DO)
-            template <class InputIterator,
-                /*typename ft::enable_if<!std::is_integral<InputIterator>::T>::type*/>
-            vector (InputIterator first, InputIterator last)
+            // 3. range
+            // if ft::enable_if<>::type is not defined (if InputIterator is an integral type), then
+            // the template is not valid and the program will know to use the -FILL constructor-
+            template < class InputIterator >
+            vector(InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = NULL)
             {
                 long    distance = std::distance(first, last);
                 int     i;
 
                 this->_data = this->_allocator.allocate(distance);
                 this->_capacity = distance;
-                this->_data = distance;
+                this->_size = distance;
                 i = 0;
                 while (first != last)
                 {
