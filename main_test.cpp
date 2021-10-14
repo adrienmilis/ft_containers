@@ -39,9 +39,9 @@ int main(void)
     ft::vector<int> v3(myints, myints+3);
     display_vector(v3);
 
-    std::vector<int> std_v0(10, 100);
-    std::vector<int>::iterator   it = std_v0.begin();
-    std::vector<int>::iterator   ite = std_v0.end();
+    ft::vector<int> ft_v0(10, 100);
+    ft::vector<int>::iterator   it = ft_v0.begin();
+    ft::vector<int>::iterator   ite = ft_v0.end();
     ft::vector<int>  v3_2(it, ite - 1);
     display_vector(v3_2);
 
@@ -57,10 +57,6 @@ int main(void)
     v = v4;
     display_vector(v);
 
-    std::cout << std::endl;
-    std::cout << "=========" << std::endl;
-    std::cout << "ITERATORS" << std::endl;
-    std::cout << "=========" << std::endl << std::endl;
     std::cout << std::endl;
     std::cout << "========" << std::endl;
     std::cout << "CAPACITY" << std::endl;
@@ -82,7 +78,9 @@ int main(void)
     std::cout << std::endl;
     std::cout << "--- 4. Capacity ---" << std::endl;
     std::cout << "v capacity: " << v.capacity() << std::endl;
-    // push_back, then look at capacity TO DO
+    v.push_back(25);
+    std::cout << "v capacity after push_back: " << v.capacity() << std::endl;
+    
     std::cout << std::endl;
     std::cout << "--- 5. Empty ---" << std::endl;
     std::cout << "Before clearing: " << v4.empty() << std::endl; 
@@ -90,10 +88,13 @@ int main(void)
     std::cout << "After clearing: " << v4.empty() << std::endl; 
     std::cout << std::endl;
     std::cout << "--- 6. Reserve ---" << std::endl;
+    display_vector(v);
     std::cout << "v capacity: " << v.capacity() << std::endl;
     v.resize(5);
+    display_vector(v);
     std::cout << "v capacity (should not change): " << v.capacity() << std::endl;
     v.resize(20, 20);
+    display_vector(v);
     std::cout << "v capacity: " << v.capacity() << std::endl;
     try {
         v.resize(v.max_size() + 1);
@@ -173,8 +174,26 @@ int main(void)
 
     std::cout << std::endl;
     std::cout << "--- 2. Push_back ---" << std::endl;
+    display_vector(v2);
+    std::cout << "capacity: " << v2.capacity() << ", size: " << v2.size() << std::endl;
+    std::cout << "push_back 5" << std::endl;
+    v2.push_back(5);
+    display_vector(v2);
+    std::cout << "capacity: " << v2.capacity() << ", size: " << v2.size() << std::endl;
+    v2.push_back(5);
+    std::cout << "push_back 5" << std::endl;
+    display_vector(v2);
+    std::cout << "capacity: " << v2.capacity() << ", size: " << v2.size() << std::endl;
+
     std::cout << std::endl;
     std::cout << "--- 3. Pop_back ---" << std::endl;
+    v2.pop_back();
+    std::cout << "pop_back" << std::endl;
+    display_vector(v2);
+    v2.pop_back();
+    std::cout << "pop_back" << std::endl;
+    display_vector(v2);
+
     std::cout << std::endl;
     std::cout << "--- 4. Insert ---" << std::endl;
     std::cout << std::endl;
@@ -183,11 +202,77 @@ int main(void)
     std::cout << "--- 6. Swap ---" << std::endl;
     std::cout << std::endl;
     std::cout << "--- 7. Clear ---" << std::endl;
-    
-    /*std::cout << std::endl;
+
+    std::cout << std::endl;
     std::cout << "=========" << std::endl;
-    std::cout << "ALLOCATOR" << std::endl;
-    std::cout << "=========" << std::endl << std::endl;*/
+    std::cout << "ITERATORS" << std::endl;
+    std::cout << "=========" << std::endl << std::endl;
+
+    int int_tab[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    ft::vector<int> iterated_vector(int_tab, int_tab + 10);
+    display_vector(iterated_vector);
+    ft::vector<int>::iterator   ft_it = iterated_vector.begin();
+    ft::vector<int>::iterator   ft_ite = iterated_vector.end();
+
+    std::cout << "begin: " << *ft_it << std::endl;
+    std::cout << "end: " << *(ft_ite - 1) << std::endl;
+
+    std::cout << "--- Default constructor ---" << std::endl;
+    // uninitialized, only good option is to = it to a valid iterator.
+    ft::vector<int>::iterator   default_it;
+    std::cout << "--- Copy constructor ---" << std::endl;
+    ft::vector<int>::iterator   copy_it(ft_it);
+    std::cout << "copy: same as begin: " << *copy_it << std::endl;
+    std::cout << "--- Copy assignation ---" << std::endl;
+    default_it = copy_it;
+    std::cout << "assignation: now same as begin and copy: " << *default_it << std::endl;
+    std::cout << "--- == and != operators ---" << std::endl;
+    std::cout << "copy_it == default_it ? " << (copy_it == default_it) << std::endl;
+    std::cout << "copy_it != default_it ? " << (copy_it != default_it) << std::endl;
+    std::cout << "--- can be dereferenced with * ---" << std::endl;
+    std::cout << "*(copy_it): " << *(copy_it) << std::endl;
+    std::cout << "--- can be dereferenced and assigned with * ---" << std::endl;
+    *(copy_it) = 3;
+    std::cout << "*(copy_it): " << *(copy_it) << std::endl;
+    *(copy_it) = 0;
+    std::cout << "--- can be pre-incremented ---" << std::endl;
+    std::cout << "*(copy_it): " << *(++copy_it) << std::endl;
+    std::cout << "--- can be post incremented ---" << std::endl;
+    std::cout << "*(copy_it): " << *(copy_it++) << std::endl;
+    std::cout << "*(copy_it): " << *(copy_it) << std::endl;
+    std::cout << "--- can be pre decremented ---" << std::endl;
+    std::cout << "*(copy_it): " << *(--copy_it) << std::endl;
+    std::cout << "--- can be pre decremented ---" << std::endl;
+    std::cout << "*(copy_it): " << *(copy_it--) << std::endl;
+    std::cout << "*(copy_it): " << *(copy_it) << std::endl;
+    std::cout << "--- adding iterator and integer value ---" << std::endl;
+    std::cout << *(copy_it + 2) << std::endl;
+    std::cout << "--- substracting iterator and integer value ---" << std::endl;
+    std::cout << *(copy_it + 5 - 2) << std::endl;
+    std::cout << "--- substracting two iterators (gives distance) ---" << std::endl;
+    ++ft_it;    // ft_it is now on index 1
+    ++copy_it;
+    ++copy_it; // copy_it is now on index 2
+    std::cout << copy_it - ft_it << std::endl;
+    std::cout << "--- relational operators <, >, <=, >= ---" << std::endl;
+    std::cout << "copy_it > ft_it ? " << (copy_it > ft_it) << std::endl;
+    std::cout << "copy_it < ft_it ? " << (copy_it < ft_it) << std::endl;
+    std::cout << "copy_it >= ft_it ? " << (copy_it >= ft_it) << std::endl;
+    std::cout << "copy_it < ft_it ? " << (copy_it <= ft_it) << std::endl;
+    std::cout << "--- += and -= ---" << std::endl;
+    copy_it += 3;
+    std::cout << "*(copy_it): " << *(copy_it) << std::endl;
+    copy_it -= 3;
+    std::cout << "*(copy_it): " << *(copy_it) << std::endl;
+    std::cout << "--- [] operator ---" << std::endl;
+    std::cout << "copy_it[3]: " << copy_it[3] << std::endl;
+
+    ft::vector<int>::const_iterator    const_it;
+
+    const_it = iterated_vector.begin();
+
+    // ++const_it;
+    // std::cout << *(const_it) << std::endl;
 
     return (0);
 }

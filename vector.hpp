@@ -12,6 +12,8 @@
         - allocating memory
         - deallocating memory
         - constructing objects ( gives a value (p2) to the pointer (p1) )
+
+    random-access iterator
 */
 
 namespace ft
@@ -33,6 +35,224 @@ namespace ft
 
         // iterators a ajouter
 
+        struct iterator
+            : public ft::iterator< std::random_access_iterator_tag, value_type >
+        {
+            typedef typename ft::iterator< std::random_access_iterator_tag, value_type > base_iterator;
+            
+            typedef typename base_iterator::value_type           value_type;
+            typedef typename base_iterator::difference_type      difference_type;
+            typedef typename base_iterator::pointer              pointer;
+            typedef typename base_iterator::reference            reference;
+            typedef typename base_iterator::iterator_category    iterator_category;
+
+            private:
+            
+                pointer _ptr;
+
+            public:
+                
+                // COPLIEN
+                iterator() : _ptr(NULL) {
+
+                }
+                iterator(pointer ptr) : _ptr(ptr) {
+
+                }
+                iterator(iterator const & src) {
+                    *this = src;
+                }
+                iterator & operator=(iterator const & rhs) {
+                    this->_ptr = rhs._ptr;
+                    return *this;
+                }
+                ~iterator() {}
+
+                // OVERLOADS
+                bool    operator==(iterator const & rhs) const {
+                    return (this->_ptr == rhs._ptr);
+                }
+                bool    operator!=(iterator const & rhs) const {
+                    return (this->_ptr != rhs._ptr);
+                }
+                reference   operator*() const {
+                    return (*(this->_ptr));
+                }
+                pointer operator->() const {
+                    return (*(this->ptr));
+                }
+                iterator & operator++() {
+                    this->_ptr++;
+                    return *this;
+                }
+                iterator operator++(int) {
+                    iterator tmp = *this;
+                    ++(*this);
+                    return (tmp);
+                }
+                iterator & operator--() {
+                    this->_ptr--;
+                    return (*this);
+                }
+                iterator operator--(int) {
+                    iterator tmp = *this;
+                    --(*this);
+                    return tmp;
+                }
+                // substract two iterators
+                difference_type operator-(iterator const & rhs) const {
+                    return (this->_ptr - rhs._ptr);
+                }
+                // add or substract iterator with an integer value
+                friend iterator operator+(iterator const & it, difference_type n) {
+                    iterator    new_it;
+
+                    new_it._ptr = it._ptr + n;
+                    return (new_it);
+                }
+                friend iterator operator-(iterator const & it, difference_type n) {
+                    iterator    new_it;
+
+                    new_it._ptr = it._ptr - n;
+                    return (new_it);
+                }
+                bool operator<(iterator const & rhs) const {
+                    return (this->_ptr < rhs._ptr);
+                }
+                bool operator>(iterator const & rhs) const {
+                    return (this->_ptr > rhs._ptr);
+                }
+                bool operator<=(iterator const & rhs) const {
+                    return (this->_ptr <= rhs._ptr);
+                }
+                bool operator>=(iterator const & rhs) const {
+                    return (this->_ptr >= rhs._ptr);
+                }
+                iterator & operator+=(long n) {
+                    *this = *this + n;
+                    return (*this);
+                }
+                iterator & operator-=(long n) {
+                    *this = *this - n;
+                    return (*this);
+                }
+                value_type operator[](difference_type n) {
+                    return (*(this->_ptr + n));
+                }
+        };
+
+        struct const_iterator
+            : public ft::iterator< std::random_access_iterator_tag, value_type >
+        {
+            typedef typename ft::iterator< std::random_access_iterator_tag, value_type > base_iterator;
+            
+            typedef typename base_iterator::value_type           value_type;
+            typedef typename base_iterator::difference_type      difference_type;
+            typedef typename base_iterator::pointer              pointer;
+            typedef typename base_iterator::reference            reference;
+            typedef typename base_iterator::iterator_category    iterator_category;
+
+            private:
+            
+                const pointer _ptr;
+
+            public:
+                
+                // COPLIEN
+                const_iterator() : _ptr(NULL) {
+
+                }
+                const_iterator(const pointer ptr) : _ptr(ptr) {
+
+                }
+                const_iterator(const_iterator const & src) {
+                    *this = src;
+                }
+                const_iterator & operator=(const_iterator const & rhs) {
+                    this->_ptr = rhs._ptr;
+                    return *this;
+                }
+                // const_iterator & operator=(iterator const & rhs) {
+                //     this->_ptr = rhs._ptr;
+                //     return *this;
+                // }
+                ~const_iterator() {}
+
+                // OVERLOADS
+                bool    operator==(const_iterator const & rhs) const {
+                    return (this->_ptr == rhs._ptr);
+                }
+                bool    operator!=(const_iterator const & rhs) const {
+                    return (this->_ptr != rhs._ptr);
+                }
+                const reference   operator*() const {
+                    return (*(this->_ptr));
+                }
+                const pointer operator->() const {
+                    return (*(this->ptr));
+                }
+                const_iterator & operator++() {
+                    this->_ptr++;
+                    return *this;
+                }
+                const_iterator operator++(int) {
+                    const_iterator tmp = *this;
+                    ++(*this);
+                    return (tmp);
+                }
+                const_iterator & operator--() {
+                    this->_ptr--;
+                    return (*this);
+                }
+                const_iterator operator--(int) {
+                    const_iterator tmp = *this;
+                    --(*this);
+                    return tmp;
+                }
+                // substract two iterators
+                difference_type operator-(const_iterator const & rhs) const {
+                    return (this->_ptr - rhs._ptr);
+                }
+                // add or substract const_iterator with an integer value
+                friend const_iterator operator+(const_iterator const & it, difference_type n) {
+                    const_iterator    new_it;
+
+                    new_it._ptr = it._ptr + n;
+                    return (new_it);
+                }
+                friend const_iterator operator-(const_iterator const & it, difference_type n) {
+                    const_iterator    new_it;
+
+                    new_it._ptr = it._ptr - n;
+                    return (new_it);
+                }
+                bool operator<(const_iterator const & rhs) const {
+                    return (this->_ptr < rhs._ptr);
+                }
+                bool operator>(const_iterator const & rhs) const {
+                    return (this->_ptr > rhs._ptr);
+                }
+                bool operator<=(const_iterator const & rhs) const {
+                    return (this->_ptr <= rhs._ptr);
+                }
+                bool operator>=(const_iterator const & rhs) const {
+                    return (this->_ptr >= rhs._ptr);
+                }
+                const_iterator & operator+=(long n) {
+                    *this = *this + n;
+                    return (*this);
+                }
+                const_iterator & operator-=(long n) {
+                    *this = *this - n;
+                    return (*this);
+                }
+                value_type operator[](difference_type n) {
+                    return (*(this->_ptr + n));
+                }
+        };
+
+        // !!! FOR CONSTANT ITERATOR
+        // dereferencing is now "const reference const operator*() {}"
 
         private:
 
@@ -54,7 +274,7 @@ namespace ft
             {
                 this->_data = this->_allocator.allocate(0);
                 this->_capacity = 0;
-                this->_size = 0; 
+                this->_size = 0;
             }
 
             // 2. fill
@@ -131,6 +351,21 @@ namespace ft
 
             /* --- ITERATORS --- */
 
+            iterator begin() {
+                return (iterator(this->_data));
+            }
+            
+            const_iterator begin() const {
+                return (const_iterator(this->_data));
+            }
+
+            iterator end() {
+                return (iterator(this->_data + this->_size));
+            }
+
+            const_iterator end() const {
+                return (const_iterator(this->_data + this->_size));
+            }
             /* --- CAPACITY --- */
             size_type size() const
             {
@@ -197,7 +432,8 @@ namespace ft
 
                     for (size_type i = 0; i < this->_size; i++)
                         this->_allocator.construct(new_array + i, this->_data[i]);
-                    this->clear();
+                    for (size_type i = 0; i < this->_size ; i++)
+                        this->_allocator.destroy(this->_data + i);
                     this->_allocator.deallocate(this->_data, this->_size);
                     this->_data = new_array;
                     this->_capacity = n;
@@ -279,15 +515,60 @@ namespace ft
                 this->_size = distance;
             }
 
+            void    push_back(const value_type & val)
+            {
+                /* 
+                    - if enough capacity : simply add value at the end
+                    - else, reallocate at twice the capacity, copy then add value
+                */
+                if (this->_size < this->_capacity)
+                    this->_allocator.construct(this->_data + this->_size, val);
+                else
+                {
+                    value_type  *new_data = this->_allocator.allocate(this->_capacity * 2);
+                    
+                    for (size_type i = 0; i < this->_size; i++)
+                        this->_allocator.construct(new_data + i, this->_data[i]);
+                    this->_allocator.construct(new_data + this->_size, val);
+                    for (size_type i = 0; i < this->_size ; i++)
+                        this->_allocator.destroy(this->_data + i);
+                    this->_allocator.deallocate(this->_data, this->_capacity);
+                    this->_capacity *= 2;
+                    this->_data = new_data;
+                }
+                (this->_size) += 1;
+            }
+
+            void    pop_back()
+            {
+                this->_allocator.destroy(this->_data + this->_size - 1);
+                this->_size--;
+            }
+
+            // void    swap(vector & x)
+            // {
+            //     // all iterators, references and pointers remain valid
+            //     // donc concretement les adresses restent les memes
+            //     ft::vector<value_type>  tmp(*this);
+
+            //     // copy x in this
+            //     // ASSIGN with iterators
+
+
+            // }
+
             void    clear()
             {
-                for (size_t i = 0; i < this->_size ; i++)
+                for (size_type i = 0; i < this->_size ; i++)
                     this->_allocator.destroy(this->_data + i);
                 this->_size = 0;
             }
 
             /* --- ALLOCATOR --- */
-
+            allocator_type  get_allocator() const
+            {
+                return (this->_allocator);
+            }
     };
 }
 
