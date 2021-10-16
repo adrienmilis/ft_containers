@@ -196,6 +196,12 @@ int main(void)
 
     std::cout << std::endl;
     std::cout << "--- 4. Insert ---" << std::endl;
+    display_vector(v2);
+    std::cout << "v2.capacity(): " << v2.capacity() << std::endl;
+    ft::vector<int>::iterator  insert_it = v.begin() + 2;
+    v2.insert(insert_it, 25);
+    display_vector(v2);
+
     std::cout << std::endl;
     std::cout << "--- 5. Erase ---" << std::endl;
     std::cout << std::endl;
@@ -203,7 +209,7 @@ int main(void)
     std::cout << std::endl;
     std::cout << "--- 7. Clear ---" << std::endl;
 
-    std::cout << std::endl;
+    /*std::cout << std::endl;
     std::cout << "=========" << std::endl;
     std::cout << "ITERATORS" << std::endl;
     std::cout << "=========" << std::endl << std::endl;
@@ -308,7 +314,7 @@ int main(void)
     std::cout << "rev_it[3]: " << rev_it[3] << std::endl;
 
     std::cout << "*rev_ite: " << *rev_ite << std::endl;
-    std::cout << "rev_ite[-3]: " << rev_ite[-3] << std::endl;
+    std::cout << "rev_ite[-3]: " << rev_ite[-3] << std::endl;*/
 
     return (0);
 }

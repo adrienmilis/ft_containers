@@ -272,7 +272,7 @@ namespace ft
 
         private:
 
-            value_type *    _data;          // points to the first element
+            pointer         _data;          // points to the first element
             size_type       _capacity;      // maximum capacity
             size_type       _size;          // current size
             allocator_type  _allocator;     // allocator object used to allocate memory
@@ -561,7 +561,7 @@ namespace ft
                     this->_allocator.construct(this->_data + this->_size, val);
                 else
                 {
-                    value_type  *new_data = this->_allocator.allocate(this->_capacity * 2);
+                    pointer new_data = this->_allocator.allocate(this->_capacity * 2);
                     
                     for (size_type i = 0; i < this->_size; i++)
                         this->_allocator.construct(new_data + i, this->_data[i]);
@@ -572,7 +572,7 @@ namespace ft
                     this->_capacity *= 2;
                     this->_data = new_data;
                 }
-                (this->_size) += 1;
+                this->_size++;
             }
 
             void    pop_back()
@@ -580,6 +580,58 @@ namespace ft
                 this->_allocator.destroy(this->_data + this->_size - 1);
                 this->_size--;
             }
+
+            // don't forget to increase container size
+            // reallocation only if the new vector size surpasses the current capacity
+            iterator insert(iterator position, const value_type & val)
+            {
+                if (this->_size == this->_capacity)
+                {
+                    pointer new_data = this->_allocator.allocate(this->_capacity * 2);
+                    typename ft::vector<value_type>::iterator   it = this->begin();
+                    int i = 0;
+                    typename ft::vector<value_type>::iterator   ite = this->end();
+
+                    while (it != position)
+                    {
+                        this->_allocator.construct(new_data + i, *it);
+                        i++;
+                    }
+                    this->_allocator.construct(new_data + i, val);
+                    i++;
+                    while (it != ite)
+                    {
+                        this->_allocator.construct(new_data + i, *it);
+                    }
+                    for (size_type i = 0; i < this->_size ; i++)
+                        this->_allocator.destroy(this->_data + i);
+                    this->_allocator.deallocate(this->_data, this->_capacity);
+                    this->_data = new_data;
+                    this->_size++;
+                    this->_capacity *= 2;
+                }
+                // tout decaler
+                this->_size++;
+                size_type   idx = this->_size;
+                while (this->_data + idx != position._ptr) {
+                    this->_data[idx] = this->_data[idx - 1];
+                    --idx;
+                }
+                this->_data[idx] = this->_data[idx - 1];
+                this->_data[idx - 1] = val;
+                return (position);  // verifier
+            }
+
+            // void insert(iterator position, size_type n, const value_type & val)
+            // {
+
+            // }
+
+            // template <class InputIterator>
+            // void insert(iterator position, InputIterator first, InputIterator last)
+            // {
+
+            // }
 
             // void    swap(vector & x)
             // {
