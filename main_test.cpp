@@ -267,12 +267,11 @@ int main(void)
     std::cout << "--- [] operator ---" << std::endl;
     std::cout << "copy_it[3]: " << copy_it[3] << std::endl;
 
-    ft::vector<int>::const_iterator    const_it;
-
-    const_it = iterated_vector.begin();
-
-    // ++const_it;
-    // std::cout << *(const_it) << std::endl;
+    std::cout << std::endl;
+    std::cout << "=================" << std::endl;
+    std::cout << "REVERSE_ITERATORS" << std::endl;
+    std::cout << "=================" << std::endl << std::endl;
+    
 
     return (0);
 }
