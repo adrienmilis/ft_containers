@@ -116,7 +116,7 @@ namespace ft
                         new_it._ptr = it._ptr + n;
                         return (new_it);
                     }
-                    iterator operator-(difference_type n) {
+                    iterator operator-(difference_type n) const {
                         iterator    new_it;
 
                         new_it._ptr = this->_ptr - n;
@@ -148,7 +148,7 @@ namespace ft
                         *this = *this - n;
                         return (*this);
                     }
-                    value_type operator[](difference_type n) {
+                    value_type operator[](difference_type n) const {
                         return (*(this->_ptr + n));
                     }
             };
@@ -233,7 +233,7 @@ namespace ft
                         new_it._ptr = it._ptr + n;
                         return (new_it);
                     }
-                    const_iterator operator-(difference_type n) {
+                    const_iterator operator-(difference_type n) const {
                         const_iterator    new_it;
 
                         new_it._ptr = this->_ptr - n;
@@ -265,7 +265,7 @@ namespace ft
                         *this = *this - n;
                         return (*this);
                     }
-                    value_type operator[](difference_type n) {
+                    value_type operator[](difference_type n) const {
                         return (*(this->_ptr + n));
                     }
             };
@@ -382,20 +382,25 @@ namespace ft
                 return (const_iterator(this->_data + this->_size));
             }
 
+            // we construct a reverse_iterator from an iterator
             reverse_iterator rbegin() {
-                return (reverse_iterator(this->_data + this->_size - 1));
+                iterator tmp(this->_data + this->_size - 2);
+                return (reverse_iterator(tmp));
             }
 
             const_reverse_iterator rbegin() const {
-                return (const_reverse_iterator(this->_data + this->_size - 1));
+                iterator tmp(this->_data + this->_size - 2);
+                return (const_reverse_iterator(tmp));
             }
 
             reverse_iterator rend() {
-                return (reverse_iterator(this->_data - 1));
+                iterator tmp(this->_data - 1);
+                return (reverse_iterator(tmp));
             }
 
             const_reverse_iterator rend() const {
-                return (const_reverse_iterator(this->_data - 1));
+                iterator tmp(this->_data - 1);
+                return (const_reverse_iterator(tmp));
             }
             /* --- CAPACITY --- */
             size_type size() const

@@ -163,9 +163,9 @@ int main(void)
     v2.assign(myints2, myints2 + 3);
     std::cout << "After assign:" << std::endl;
     display_vector(v2);
-    std::vector<int> std_v(10, 100);
-    std::vector<int>::iterator   it2 = std_v.begin();
-    std::vector<int>::iterator   ite2 = std_v.end();
+    ft::vector<int> std_v(10, 100);
+    ft::vector<int>::iterator   it2 = std_v.begin();
+    ft::vector<int>::iterator   ite2 = std_v.end();
     std::cout << "After assign with iterators: " << std::endl;
     v2.assign(it2, ite2 - 1);
     display_vector(v2);
@@ -271,7 +271,44 @@ int main(void)
     std::cout << "=================" << std::endl;
     std::cout << "REVERSE_ITERATORS" << std::endl;
     std::cout << "=================" << std::endl << std::endl;
-    
+
+    display_vector(iterated_vector);
+    ft::vector<int>::reverse_iterator   rev_it = iterated_vector.rbegin();
+    ft::vector<int>::reverse_iterator   rev_ite = iterated_vector.rend();
+
+    std::cout << "--- operator* ---" << std::endl;
+    std::cout << "*(rev_it): " << *rev_it << std::endl;
+    std::cout << "*(rev_ite): " << *rev_ite << std::endl;
+
+    std::cout << "--- operator+ ---" << std::endl;
+    std::cout << "*(rev_it + 2): " << *(rev_it + 2) << std::endl;
+
+    std::cout << "--- operator++ ---" << std::endl;
+    std::cout << "(*(++rev_it)): " << (*(++rev_it)) << std::endl;
+    std::cout << "(*(rev_it++)): " << (*(rev_it++)) << std::endl;
+    std::cout << "(*rev_it): " << (*rev_it) << std::endl;
+
+    std::cout << "--- operator+= ---" << std::endl;
+    rev_it += 3;
+    std::cout << "rev_it += 3 --> *(rev_it): " << *(rev_it) << std::endl;
+
+    std::cout << "--- operator- ---" << std::endl;
+    std::cout << "*(rev_it - 3): " << *(rev_it - 3) << std::endl;
+
+    std::cout << "--- operator-- ---" << std::endl;
+    std::cout << "(*(--rev_it)): " << (*(--rev_it)) << std::endl;
+    std::cout << "(*(rev_it--)): " << (*(rev_it--)) << std::endl;
+    std::cout << "(*rev_it): " << (*rev_it) << std::endl;
+
+    std::cout << "--- operator-= ---" << std::endl;
+    rev_it -= 3;
+    std::cout << "rev_it -= 3 --> *(rev_it): " << *(rev_it) << std::endl;
+
+    std::cout << "--- operator[] ---" << std::endl;
+    std::cout << "rev_it[3]: " << rev_it[3] << std::endl;
+
+    std::cout << "*rev_ite: " << *rev_ite << std::endl;
+    std::cout << "rev_ite[-3]: " << rev_ite[-3] << std::endl;
 
     return (0);
 }

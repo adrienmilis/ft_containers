@@ -158,6 +158,8 @@ namespace ft
 
 
     /* --- REVERSE_ITERATOR --- */
+    // va toujours pointer 1 derriere, c'est au moment du dereferencement qu'on
+    // recupere la bonne valeur
     template <class Iterator>
     class reverse_iterator
     {
@@ -197,10 +199,10 @@ namespace ft
 
             // 3. Overloads
             reference operator*() const {
-                return (reverse_iterator(--_base_iterator));
+                return (*(_base_iterator + 1));
             }
             reverse_iterator operator+(difference_type n) const {
-                return (reverse_iterator(_base_iterator[-n-1]));
+                return (reverse_iterator(_base_iterator - n));
             }
             reverse_iterator & operator++() {
                 --_base_iterator;
@@ -216,7 +218,7 @@ namespace ft
                 return (*this);
             }
             reverse_iterator operator-(difference_type n) const {
-                return (reverse_iterator(_base_iterator[n-1]));
+                return (reverse_iterator(_base_iterator + n));
             }
             reverse_iterator & operator--() {
                 ++_base_iterator;
@@ -235,7 +237,7 @@ namespace ft
                 return (_base_iterator._ptr);
             }
             reference operator[] (difference_type n) const {
-                return (_base_iterator[-n-1]);
+                return (*(_base_iterator - n + 1));
             }
     };
     template <class Iterator>
