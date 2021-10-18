@@ -23,7 +23,7 @@ namespace ft
     struct enable_if {};
     
     template<class T>
-    struct enable_if<true, T>
+    struct enable_if<true, T> // enable_if<bool, var>
     { typedef T type; };
 
     /* --- IS_INTEGRAL --- */
@@ -279,6 +279,71 @@ namespace ft
         const reverse_iterator<Iterator>& rhs) {
             return (lhs.base() - rhs.base());
         }
+
+    /* --- STD::EQUAL --- */
+    template <class InputIterator1, class InputIterator2>
+    bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+    {
+        while (first1 != last1)
+        {
+            if (!(*first1 == *first2))
+                return false;
+            ++first1;
+            ++first2;
+        }
+        return true;
+    }
+
+    // pred: binary function that accepts two elements and return true if equal or false if not equal
+    template <class InputIterator1, class InputIterator2, class BinaryPredicate>
+    bool equal(InputIterator1 first1, InputIterator1 last1,
+                InputIterator2 first2, BinaryPredicate pred)
+    {
+        while (first1 != last1)
+        {
+            if (!pred(*first1, *first2))
+                return false;
+            ++first1;
+            ++first2;
+        }
+        return true;
+    }
+
+    /* --- STD::LEXICOGRAPHICAL_COMPARE --- */
+    template <class InputIterator1, class InputIterator2>
+    bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
+                                    InputIterator2 first2, InputIterator2 last2)
+    {
+        while (first1 != last1)
+        {
+            if (first2 == last2 || *first2 < *first1)
+                return false;
+            else if (*first1 < *first2)
+                return true;
+            ++first1;
+            ++first2;
+        }
+        return (first2 != last2);
+    }
+
+    // comp: binary function that accepts two elements of the type
+    // pointed by the iterators and return true if equal or false if not equal
+    template <class InputIterator1, class InputIterator2, class Compare>
+    bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
+                                    InputIterator2 first2, InputIterator2 last2,
+                                    Compare comp)
+    {
+        while (first1 != last1)
+        {
+            if (first2 == last2 || comp(*first2, *first1))
+                return false;
+            else if (comp(*first1, *first2))
+                return true;
+            ++first1;
+            ++first2;
+        }
+        return (first2 != last2);
+    }
 }
 
 #endif

@@ -1,7 +1,6 @@
 #include "vector.hpp"
 #include "utils.hpp"
 #include <iostream>
-#include <vector>
 
 template<typename T>
 void    display_vector(const ft::vector<T> & v)
@@ -241,13 +240,39 @@ int main(void)
     v.insert(v.begin() + 1, myints3, myints3 + 3);
     display_vector(v);
     
-    // std::cout << std::endl;
-    // std::cout << "--- 5. Erase ---" << std::endl;
-    // std::cout << std::endl;
-    // std::cout << "--- 6. Swap ---" << std::endl;
-    // std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "--- 5. Erase ---" << std::endl;
+    std::cout << "* Single element *" << std::endl;
+    display_vector(v3);
+    v3.erase(v3.end() - 1);
+    std::cout << "  --> v3.erase(v3.end() - 1)" << std::endl;
+    display_vector(v3);
+    v3.erase(v3.begin() + 1);
+    std::cout << "  --> v3.erase(v3.begin() + 1)" << std::endl;
+    display_vector(v3);
 
-    /*std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "* Range *" << std::endl;
+    display_vector(v3);
+    v3.erase(v3.begin() + 1, v3.begin() + 3);
+    std::cout << "erase from begin+1 to begin+3" << std::endl;
+    display_vector(v3);
+    v3.erase(v3.end() - 2, v3.end() - 1);
+    std::cout << "erase from end-2 to end-1" << std::endl;
+    display_vector(v3);
+
+    std::cout << std::endl;
+    std::cout << "--- 6. Swap ---" << std::endl;
+    ft::vector<int> foo (3,100);   // three ints with a value of 100
+    ft::vector<int> bar (5,200);   // five ints with a value of 200    
+    foo.swap(bar);  
+    std::cout << "foo contains: ";
+    display_vector(foo);
+    std::cout << "bar contains: ";
+    display_vector(bar);
+    std::cout << std::endl;
+
+    std::cout << std::endl;
     std::cout << "=========" << std::endl;
     std::cout << "ITERATORS" << std::endl;
     std::cout << "=========" << std::endl << std::endl;
@@ -352,7 +377,22 @@ int main(void)
     std::cout << "rev_it[3]: " << rev_it[3] << std::endl;
 
     std::cout << "*rev_ite: " << *rev_ite << std::endl;
-    std::cout << "rev_ite[-3]: " << rev_ite[-3] << std::endl;*/
+    std::cout << "rev_ite[-3]: " << rev_ite[-3] << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "====================" << std::endl;
+    std::cout << "RELATIONAL OPERATORS" << std::endl;
+    std::cout << "====================" << std::endl << std::endl;
+
+    ft::vector<int> foo1 (3,100);   // three ints with a value of 100
+    ft::vector<int> bar2 (2,200);   // two ints with a value of 200
+
+    if (foo1==bar2) std::cout << "foo and bar are equal\n";
+    if (foo1!=bar2) std::cout << "foo and bar are not equal\n";
+    if (foo1< bar2) std::cout << "foo is less than bar\n";
+    if (foo1> bar2) std::cout << "foo is greater than bar\n";
+    if (foo1<=bar2) std::cout << "foo is less than or equal to bar\n";
+    if (foo1>=bar2) std::cout << "foo is greater than or equal to bar\n";
 
     return (0);
 }

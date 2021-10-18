@@ -727,17 +727,105 @@ namespace ft
                 this->_size += n;
             }
 
-            // void    swap(vector & x)
-            // {
-            //     // all iterators, references and pointers remain valid
-            //     // donc concretement les adresses restent les memes
-            //     ft::vector<value_type>  tmp(*this);
+            // erase: single element
+            iterator erase(iterator position)
+            {
+                typename ft::vector<value_type>::iterator   it = this->begin();
+                typename ft::vector<value_type>::iterator   ite = this->end();
 
-            //     // copy x in this
-            //     // ASSIGN with iterators
+                if (position == ite - 1)
+                {
+                    this->_size--;
+                    return (this->end());
+                }
+                else if (position == it)
+                {
+                    ++this->_data;
+                    return (this->begin());
+                }
+                else
+                {
+                    size_type   i = 0;
+                    pointer new_data = this->_allocator.allocate(this->_size - 1);
+                    while (it != ite) {
+                        if (it != position) {
+                            this->_allocator.construct(new_data + i, *it);
+                            ++i;
+                        }
+                        ++it;
+                    }
+                    for (size_type i = 0; i < this->_size ; i++)
+                        this->_allocator.destroy(this->_data + i);
+                    this->_allocator.deallocate(this->_data, this->_capacity);
+                    this->_data = new_data;
+                    this->_size--;
+                    this->_capacity = this->_size;
+                }
+                return (this->begin() + (position - this->begin()));
+            }
 
+            // erase: range
+            iterator erase(iterator first, iterator last)
+            {
+                typename ft::vector<value_type>::iterator   it = this->begin();
+                typename ft::vector<value_type>::iterator   ite = this->end();
+                typename ft::vector<value_type>::iterator   tmp = first;
+                size_type   distance = last - first + 1;
 
-            // }
+                // end : do not reallocate
+                if (last == ite - 1) {
+                    this->_size -= distance;
+                    return (this->end());
+                }
+                else if (first == this->begin())
+                {
+                    this->_data += distance;
+                    this->_size -= distance;
+                    return (this->begin());
+                }
+                // other than end: reallocate
+                else
+                {
+                    size_type   i = 0;
+                    pointer new_data = this->_allocator.allocate(this->_size - distance);
+                    while (it != ite) {
+                        if (it != first) {
+                            this->_allocator.construct(new_data + i, *it);
+                            ++i;
+                        }
+                        else if (first != last)
+                            ++first;
+                        ++it;
+                    }
+                    for (size_type i = 0; i < this->_size ; i++)
+                        this->_allocator.destroy(this->_data + i);
+                    this->_allocator.deallocate(this->_data, this->_capacity);
+                    this->_data = new_data;
+                    this->_size -= distance;
+                    this->_capacity = this->_size;
+                }
+                return (tmp);
+            }
+
+            void    swap(vector & x)
+            {
+                pointer     tmp;
+                size_type   tmp_size;
+                size_type   tmp_capacity;
+
+                tmp = this->_data;
+                tmp_size = this->_size;
+                tmp_capacity = this->_capacity;
+
+                this->_data = x._data;
+                this->_size = x._size;
+                this->_capacity = x._capacity;
+
+                x._data = tmp;
+                x._size = tmp_size;
+                x._capacity = tmp_capacity;
+
+            }
 
             void    clear()
             {
@@ -752,6 +840,59 @@ namespace ft
                 return (this->_allocator);
             }
     };
+
+    // std::swap (vector)
+    template <class T, class Alloc>
+    void    swap(vector <T, Alloc> & x, vector<T, Alloc> & y)
+    {
+        x.swap(y);
+    }
+
+    // std::relational operators (vector)
+    template <class T, class Alloc>
+    bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        if (lhs.size() != rhs.size())
+            return false;
+        return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+    }
+
+    template <class T, class Alloc>
+    bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        if (lhs.size() == rhs.size())
+            return false;
+        return !(ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+    }
+
+    template <class T, class Alloc>
+    bool operator<(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+    }
+
+    template <class T, class Alloc>
+    bool operator<=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        if (lhs == rhs)
+            return true;
+        return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+    }
+
+    template <class T, class Alloc>
+    bool operator>(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        return !(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+    }
+
+    template <class T, class Alloc>
+    bool operator>=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        if (lhs == rhs)
+            return true;
+        return !(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+    }
+
 }
 
 #endif
