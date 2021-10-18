@@ -581,10 +581,10 @@ namespace ft
                 this->_size--;
             }
 
-            // don't forget to increase container size
-            // reallocation only if the new vector size surpasses the current capacity
+            // insert: single element
             iterator insert(iterator position, const value_type & val)
             {
+                size_type   position_index = position - this->begin();
                 if (this->_size == this->_capacity)
                 {
                     pointer new_data = this->_allocator.allocate(this->_capacity * 2);
@@ -595,13 +595,17 @@ namespace ft
                     while (it != position)
                     {
                         this->_allocator.construct(new_data + i, *it);
-                        i++;
+                        ++i;
+                        ++it;
                     }
+
                     this->_allocator.construct(new_data + i, val);
                     i++;
                     while (it != ite)
                     {
                         this->_allocator.construct(new_data + i, *it);
+                        ++i;
+                        ++it;
                     }
                     for (size_type i = 0; i < this->_size ; i++)
                         this->_allocator.destroy(this->_data + i);
@@ -610,28 +614,118 @@ namespace ft
                     this->_size++;
                     this->_capacity *= 2;
                 }
-                // tout decaler
-                this->_size++;
-                size_type   idx = this->_size;
-                while (this->_data + idx != position._ptr) {
-                    this->_data[idx] = this->_data[idx - 1];
-                    --idx;
+                else
+                {
+                    size_type   idx = this->_size;
+                    while (idx != position_index) {
+                        this->_data[idx] = this->_data[idx - 1];
+                        --idx;
+                    }
+                    this->_allocator.construct(this->_data + idx, val);
+                    this->_size++;
                 }
-                this->_data[idx] = this->_data[idx - 1];
-                this->_data[idx - 1] = val;
-                return (position);  // verifier
+                return (this->begin() + position_index);
             }
 
-            // void insert(iterator position, size_type n, const value_type & val)
-            // {
+            // insert: fill
+            void insert(iterator position, size_type n, const value_type & val)
+            {
+                size_type   construct_to;
+                if (this->_size + n >= this->_capacity)
+                {
+                    pointer new_data = this->_allocator.allocate(this->_capacity * 2 + n);
+                    typename ft::vector<value_type>::iterator   it = this->begin();
+                    typename ft::vector<value_type>::iterator   ite = this->end();
+                    size_type i = 0;
 
-            // }
+                    while (it != position) {
+                        this->_allocator.construct(new_data + i, *it);
+                        ++i;
+                        ++it;
+                    }
+                    construct_to = n + i;
+                    while (i < construct_to) {
+                        this->_allocator.construct(new_data + i, val);
+                        ++i;
+                    }
+                    while (it != ite) {
+                        this->_allocator.construct(new_data + i, *it);
+                        ++i;
+                        ++it;
+                    }
+                    for (size_type i = 0; i < this->_size ; i++)
+                        this->_allocator.destroy(this->_data + i);
+                    this->_allocator.deallocate(this->_data, this->_capacity);
+                    this->_data = new_data;
+                    this->_capacity = this->_capacity * 2 + n;
+                }
+                else
+                {
+                    size_type   idx = this->_size - 1 + n;
+                    size_type   position_index = position - this->begin();
+                    while (idx != position_index) {
+                        this->_data[idx] = this->_data[idx - n];
+                        --idx;
+                    }
+                    construct_to = idx + n;
+                    while (idx < construct_to) {
+                        this->_allocator.construct(this->_data + idx, val);
+                        ++idx;
+                    }
+                }
+                this->_size += n;
+            }
 
-            // template <class InputIterator>
-            // void insert(iterator position, InputIterator first, InputIterator last)
-            // {
+            // insert: range
+            template <class InputIterator>
+            void insert(iterator position, InputIterator first, InputIterator last, 
+                typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = NULL)
+            {
+                size_type   n = std::distance(first, last);
+                if (this->_size + n >= this->_capacity)
+                {
+                    pointer new_data = this->_allocator.allocate(this->_capacity * 2 + n);
+                    typename ft::vector<value_type>::iterator   it = this->begin();
+                    typename ft::vector<value_type>::iterator   ite = this->end();
+                    size_type i = 0;
 
-            // }
+                    while (it != position) {
+                        this->_allocator.construct(new_data + i, *it);
+                        ++i;
+                        ++it;
+                    }
+                    while (first != last) {
+                        this->_allocator.construct(new_data + i, *first);
+                        ++i;
+                        ++first;
+                    }
+                    while (it != ite) {
+                        this->_allocator.construct(new_data + i, *it);
+                        ++i;
+                        ++it;
+                    }
+                    for (size_type i = 0; i < this->_size ; i++)
+                        this->_allocator.destroy(this->_data + i);
+                    this->_allocator.deallocate(this->_data, this->_capacity);
+                    this->_data = new_data;
+                    this->_capacity = this->_capacity * 2 + n;
+                }
+                else
+                {
+                    size_type   idx = this->_size - 1 + n;
+                    size_type   position_index = position - this->begin();
+                    while (idx != position_index) {
+                        this->_data[idx] = this->_data[idx - n];
+                        --idx;
+                    }
+                    while (first != last) {
+                        this->_allocator.construct(this->_data + idx, *first);
+                        ++idx;
+                        ++first;
+                    }
+                }
+                this->_size += n;
+            }
 
             // void    swap(vector & x)
             // {

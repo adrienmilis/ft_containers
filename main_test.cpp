@@ -196,18 +196,56 @@ int main(void)
 
     std::cout << std::endl;
     std::cout << "--- 4. Insert ---" << std::endl;
-    display_vector(v2);
+    std::cout << "* Single element: enough capacity *" << std::endl;
     std::cout << "v2.capacity(): " << v2.capacity() << std::endl;
-    ft::vector<int>::iterator  insert_it = v.begin() + 2;
+    ft::vector<int>::iterator  insert_it = v2.begin() + 2;
+    *insert_it = 19;
+    display_vector(v2);
     v2.insert(insert_it, 25);
+    display_vector(v2);
+    std::cout << std::endl;
+    std::cout << "* Single element: not enough capacity *" << std::endl;
+    display_vector(v3);
+    std::cout << "capacity: " << v3.capacity() << std::endl;
+    ft::vector<int>::iterator  insert_it_v3 = v3.begin();
+    v3.insert(insert_it_v3, 19);
+    display_vector(v3);
+    std::cout << "capacity: " << v3.capacity() << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "* Fill: enough capacity *" << std::endl;
+    display_vector(v2);
+    std::cout << "capacity: " << v2.capacity() << std::endl;
+    v2.insert(v2.begin() + 2, 3, 19);
     display_vector(v2);
 
     std::cout << std::endl;
-    std::cout << "--- 5. Erase ---" << std::endl;
+    std::cout << "* Fill: not enough capacity *" << std::endl;
+    display_vector(v3);
+    std::cout << "capacity: " << v3.capacity() << std::endl;
+    v3.insert(v3.begin() + 2, 3, 19);
+    display_vector(v3);
+
     std::cout << std::endl;
-    std::cout << "--- 6. Swap ---" << std::endl;
+    std::cout << "* Range: enough capacity *" << std::endl;
+    display_vector(v3);
+    std::cout << "capacity: " << v3.capacity() << std::endl;
+    int myints3[] = {3, 3, 3, 3};
+    v3.insert(v3.begin() + 1, myints3, myints3 + 3);
+    display_vector(v3);
+
     std::cout << std::endl;
-    std::cout << "--- 7. Clear ---" << std::endl;
+    std::cout << "* Range: not enough capacity *" << std::endl;
+    display_vector(v);
+    std::cout << "capacity: " << v.capacity() << std::endl;
+    v.insert(v.begin() + 1, myints3, myints3 + 3);
+    display_vector(v);
+    
+    // std::cout << std::endl;
+    // std::cout << "--- 5. Erase ---" << std::endl;
+    // std::cout << std::endl;
+    // std::cout << "--- 6. Swap ---" << std::endl;
+    // std::cout << std::endl;
 
     /*std::cout << std::endl;
     std::cout << "=========" << std::endl;
