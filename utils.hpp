@@ -171,22 +171,17 @@ namespace ft
 
         private:
 
-            Iterator    _base_iterator;
+            iterator_type   _base_iterator;
 
         public:
 
             // 1. Constructors
-            reverse_iterator() : _base_iterator() {
-                
-            }
+            reverse_iterator() : _base_iterator() {}
 
-            explicit reverse_iterator(iterator_type it) : _base_iterator(it) {
+            explicit reverse_iterator(iterator_type it) : _base_iterator(it) {}
 
-            }
             template<class Iter>
-            reverse_iterator(const reverse_iterator<Iter> & rev_it) : _base_iterator(rev_it._base_iterator) {
-
-            }
+            reverse_iterator(const reverse_iterator<Iter> & rev_it) : _base_iterator(rev_it._base_iterator) {}
 
             // 2. Base
             iterator_type base() const {
@@ -195,7 +190,7 @@ namespace ft
 
             // 3. Overloads
             reference operator*() const {
-                return (*(_base_iterator + 1));
+                return (*(_base_iterator - 1));
             }
             reverse_iterator operator+(difference_type n) const {
                 return (reverse_iterator(_base_iterator - n));
@@ -232,8 +227,8 @@ namespace ft
             pointer operator->() const {
                 return (_base_iterator._ptr);
             }
-            reference operator[] (difference_type n) const {
-                return (*(_base_iterator - n + 1));
+            reference operator[](difference_type n) const {
+				return (*(_base_iterator - n - 1));
             }
     };
     template <class Iterator>

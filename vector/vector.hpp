@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <algorithm>
-#include "utils.hpp"
+#include "../utils.hpp"
 
 /*
     std::allocator : its methods are used for
@@ -633,7 +633,16 @@ namespace ft
                 size_type   construct_to;
                 if (this->_size + n >= this->_capacity)
                 {
-                    pointer new_data = this->_allocator.allocate(this->_capacity * 2 + n);
+                    size_type   old_capacity = this->_capacity;
+                    pointer new_data;
+                    if (this->_capacity * 2 >= this->_size + n) {
+                        new_data = this->_allocator.allocate(this->_capacity * 2);
+                        this->_capacity *= 2;
+                    }
+                    else {
+                        new_data = this->_allocator.allocate(this->_capacity * 2 + n);
+                        this->_capacity = this->_capacity * 2 + n;
+                    }
                     typename ft::vector<value_type>::iterator   it = this->begin();
                     typename ft::vector<value_type>::iterator   ite = this->end();
                     size_type i = 0;
@@ -655,9 +664,8 @@ namespace ft
                     }
                     for (size_type i = 0; i < this->_size ; i++)
                         this->_allocator.destroy(this->_data + i);
-                    this->_allocator.deallocate(this->_data, this->_capacity);
+                    this->_allocator.deallocate(this->_data, old_capacity);
                     this->_data = new_data;
-                    this->_capacity = this->_capacity * 2 + n;
                 }
                 else
                 {
@@ -684,7 +692,16 @@ namespace ft
                 size_type   n = std::distance(first, last);
                 if (this->_size + n >= this->_capacity)
                 {
-                    pointer new_data = this->_allocator.allocate(this->_capacity * 2 + n);
+                    pointer new_data;
+                    size_type   old_capacity = this->_capacity;
+                    if (this->_capacity * 2 >= this->_size + n) {
+                        new_data = this->_allocator.allocate(this->_capacity * 2);
+                        this->_capacity *= 2;
+                    }
+                    else {
+                        new_data = this->_allocator.allocate(this->_capacity * 2 + n);
+                        this->_capacity = this->_capacity * 2 + n;
+                    }
                     typename ft::vector<value_type>::iterator   it = this->begin();
                     typename ft::vector<value_type>::iterator   ite = this->end();
                     size_type i = 0;
@@ -706,18 +723,18 @@ namespace ft
                     }
                     for (size_type i = 0; i < this->_size ; i++)
                         this->_allocator.destroy(this->_data + i);
-                    this->_allocator.deallocate(this->_data, this->_capacity);
+                    this->_allocator.deallocate(this->_data, old_capacity);
                     this->_data = new_data;
-                    this->_capacity = this->_capacity * 2 + n;
                 }
                 else
                 {
                     size_type   idx = this->_size - 1 + n;
                     size_type   position_index = position - this->begin();
-                    while (idx != position_index) {
+                    while (idx - n >= position_index) {
                         this->_data[idx] = this->_data[idx - n];
                         --idx;
                     }
+                    idx = position_index;
                     while (first != last) {
                         this->_allocator.construct(this->_data + idx, *first);
                         ++idx;
@@ -770,10 +787,10 @@ namespace ft
                 typename ft::vector<value_type>::iterator   it = this->begin();
                 typename ft::vector<value_type>::iterator   ite = this->end();
                 typename ft::vector<value_type>::iterator   tmp = first;
-                size_type   distance = last - first + 1;
+                size_type   distance = last - first;
 
                 // end : do not reallocate
-                if (last == ite - 1) {
+                if (last == ite) {
                     this->_size -= distance;
                     return (this->end());
                 }
@@ -793,7 +810,7 @@ namespace ft
                             this->_allocator.construct(new_data + i, *it);
                             ++i;
                         }
-                        else if (first != last)
+                        else if (first != last - 1)
                             ++first;
                         ++it;
                     }
