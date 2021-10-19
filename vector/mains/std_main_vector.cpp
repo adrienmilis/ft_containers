@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <sys/time.h>
 
 int	get_elapsed(struct timeval begin, struct timeval end)   // nanoseconds
 {
@@ -29,10 +28,6 @@ void    display_vector(const std::vector<T> & v)
 
 int main(void)
 {
-    struct timeval begin;
-    struct timeval end;
-
-    gettimeofday(&begin, NULL);
     std::cout << "============" << std::endl;
     std::cout << "CONSTRUCTORS" << std::endl;
     std::cout << "============" << std::endl << std::endl;
@@ -404,7 +399,12 @@ int main(void)
     if (foo1> bar2) std::cout << "foo is greater than bar\n";
     if (foo1<=bar2) std::cout << "foo is less than or equal to bar\n";
     if (foo1>=bar2) std::cout << "foo is greater than or equal to bar\n";
-    gettimeofday(&end, NULL);
-    std::cout << get_elapsed(begin, end) << std::endl;
+
+    std::vector<int> big_vector(1000, 1000);
+    std::vector<int> medium_vector(500, 500);
+
+    big_vector.insert(big_vector.begin() + 500, medium_vector.begin(), medium_vector.end());
+    big_vector.erase(big_vector.begin() + 10, big_vector.end() - 200);
+
     return (0);
 }

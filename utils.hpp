@@ -190,7 +190,7 @@ namespace ft
 
             // 3. Overloads
             reference operator*() const {
-                return (*(_base_iterator - 1));
+                return (*_base_iterator);
             }
             reverse_iterator operator+(difference_type n) const {
                 return (reverse_iterator(_base_iterator - n));
@@ -228,7 +228,7 @@ namespace ft
                 return (_base_iterator._ptr);
             }
             reference operator[](difference_type n) const {
-				return (*(_base_iterator - n - 1));
+				return (*(_base_iterator - n));
             }
     };
     template <class Iterator>

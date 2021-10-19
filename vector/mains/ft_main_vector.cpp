@@ -1,15 +1,5 @@
 #include <iostream>
-#include "vector.hpp"
-#include <sys/time.h>
-
-int	get_elapsed(struct timeval begin, struct timeval end)   // nanoseconds
-{
-	int	elapsed;
-
-	elapsed = (end.tv_sec - begin.tv_sec) * 1000000.0
-		+ (end.tv_usec - begin.tv_usec);
-	return (elapsed);
-}
+#include "../vector.hpp"
 
 template<typename T>
 void    display_vector(const ft::vector<T> & v)
@@ -28,10 +18,6 @@ void    display_vector(const ft::vector<T> & v)
 
 int main(void)
 {
-    struct timeval begin;
-    struct timeval end;
-
-    gettimeofday(&begin, NULL);
     std::cout << "============" << std::endl;
     std::cout << "CONSTRUCTORS" << std::endl;
     std::cout << "============" << std::endl << std::endl;
@@ -407,11 +393,15 @@ int main(void)
     if (foo1<=bar2) std::cout << "foo is less than or equal to bar\n";
     if (foo1>=bar2) std::cout << "foo is greater than or equal to bar\n";
 
+    ft::vector<int> big_vector(1000, 1000);
+    ft::vector<int> medium_vector(500, 500);
+
+    big_vector.insert(big_vector.begin() + 500, medium_vector.begin(), medium_vector.end());
+    big_vector.erase(big_vector.begin() + 10, big_vector.end() - 200);
+
     // const ft::vector<int>               const_vector(3, 100);
     // ft::vector<int>::reverse_iterator   rit = const_vector.rbegin();
 
     // std::cout << *rit << std::endl;
-    gettimeofday(&end, NULL);
-    std::cout << get_elapsed(begin, end) << std::endl;
     return (0);
 }
