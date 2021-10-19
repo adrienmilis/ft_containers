@@ -2,19 +2,9 @@
 #define VECTOR_HPP
 
 #include <memory>
-#include <iostream>
 #include <stdexcept>
 #include <algorithm>
 #include "../utils.hpp"
-
-/*
-    std::allocator : its methods are used for
-        - allocating memory
-        - deallocating memory
-        - constructing objects ( gives a value (p2) to the pointer (p1) )
-
-    random-access iterator
-*/
 
 namespace ft
 {

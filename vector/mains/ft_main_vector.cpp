@@ -4,7 +4,7 @@
 template<typename T>
 void    display_vector(const ft::vector<T> & v)
 {
-    if (v.size() == 0)
+    if (v.empty())
     {
         std::cout << "Empty vector" << std::endl;
         return ;
@@ -399,9 +399,5 @@ int main(void)
     big_vector.insert(big_vector.begin() + 500, medium_vector.begin(), medium_vector.end());
     big_vector.erase(big_vector.begin() + 10, big_vector.end() - 200);
 
-    // const ft::vector<int>               const_vector(3, 100);
-    // ft::vector<int>::reverse_iterator   rit = const_vector.rbegin();
-
-    // std::cout << *rit << std::endl;
     return (0);
 }
