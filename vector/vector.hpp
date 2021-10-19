@@ -384,12 +384,12 @@ namespace ft
 
             // we construct a reverse_iterator from an iterator
             reverse_iterator rbegin() {
-                iterator tmp(this->_data + this->_size - 2);
+                iterator tmp(this->_data + this->_size - 1);
                 return (reverse_iterator(tmp));
             }
 
             const_reverse_iterator rbegin() const {
-                iterator tmp(this->_data + this->_size - 2);
+                iterator tmp(this->_data + this->_size - 1);
                 return (const_reverse_iterator(tmp));
             }
 

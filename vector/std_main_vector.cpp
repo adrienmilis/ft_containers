@@ -355,9 +355,10 @@ int main(void)
     std::vector<int>::reverse_iterator   rev_it = iterated_vector.rbegin();
     std::vector<int>::reverse_iterator   rev_ite = iterated_vector.rend();
 
+    --rev_ite;
     std::cout << "--- operator* ---" << std::endl;
     std::cout << "*(rev_it): " << *rev_it << std::endl;
-    std::cout << "*(rev_ite - 1): " << *(rev_ite - 1) << std::endl;
+    std::cout << "*(rev_ite): " << *(rev_ite) << std::endl;
 
     std::cout << "--- operator+ ---" << std::endl;
     std::cout << "*(rev_it + 2): " << *(rev_it + 2) << std::endl;

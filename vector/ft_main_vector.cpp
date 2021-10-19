@@ -357,9 +357,10 @@ int main(void)
     ft::vector<int>::reverse_iterator   rev_it = iterated_vector.rbegin();
     ft::vector<int>::reverse_iterator   rev_ite = iterated_vector.rend();
 
+    --rev_ite;
     std::cout << "--- operator* ---" << std::endl;
     std::cout << "*(rev_it): " << *rev_it << std::endl;
-    std::cout << "*(rev_ite - 1): " << *(rev_ite - 1) << std::endl;
+    std::cout << "*(rev_ite): " << *(rev_ite) << std::endl;
 
     std::cout << "--- operator+ ---" << std::endl;
     std::cout << "*(rev_it + 2): " << *(rev_it + 2) << std::endl;
@@ -405,6 +406,11 @@ int main(void)
     if (foo1> bar2) std::cout << "foo is greater than bar\n";
     if (foo1<=bar2) std::cout << "foo is less than or equal to bar\n";
     if (foo1>=bar2) std::cout << "foo is greater than or equal to bar\n";
+
+    // const ft::vector<int>               const_vector(3, 100);
+    // ft::vector<int>::reverse_iterator   rit = const_vector.rbegin();
+
+    // std::cout << *rit << std::endl;
     gettimeofday(&end, NULL);
     std::cout << get_elapsed(begin, end) << std::endl;
     return (0);
