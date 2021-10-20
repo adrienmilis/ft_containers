@@ -50,35 +50,33 @@ namespace ft
 
                 public:
 
-                    pointer _ptr;
+                    pointer ptr;
 
                 public:
 
                     // COPLIEN
-                    iterator() : _ptr(NULL) {
-
-                    }
-                    iterator(pointer ptr) : _ptr(ptr) {
-
-                    }
+                    iterator() : ptr(NULL) {}
+                    
+                    iterator(pointer ptr) : ptr(ptr) {}
+                    
                     iterator(iterator const & src) {
                         *this = src;
                     }
                     iterator & operator=(iterator const & rhs) {
-                        this->_ptr = rhs._ptr;
+                        this->ptr = rhs.ptr;
                         return *this;
                     }
                     ~iterator() {}
 
                     // OVERLOADS
                     reference   operator*() const {
-                        return (*(this->_ptr));
+                        return (*(this->ptr));
                     }
                     pointer operator->() const {
-                        return (this->_ptr);
+                        return (this->ptr);
                     }
                     iterator & operator++() {
-                        this->_ptr++;
+                        ++this->ptr;
                         return *this;
                     }
                     iterator operator++(int) {
@@ -87,7 +85,7 @@ namespace ft
                         return (tmp);
                     }
                     iterator & operator--() {
-                        this->_ptr--;
+                        this->ptr--;
                         return (*this);
                     }
                     iterator operator--(int) {
@@ -97,38 +95,38 @@ namespace ft
                     }
                     // substract two iterators
                     difference_type operator-(iterator const & rhs) const {
-                        return (this->_ptr - rhs._ptr);
+                        return (this->ptr - rhs.ptr);
                     }
                     // add or substract iterator with an integer value
                     friend iterator operator+(iterator const & it, difference_type n) {
                         iterator    new_it;
 
-                        new_it._ptr = it._ptr + n;
+                        new_it.ptr = it.ptr + n;
                         return (new_it);
                     }
                     iterator operator-(difference_type n) const {
                         iterator    new_it;
 
-                        new_it._ptr = this->_ptr - n;
+                        new_it.ptr = this->ptr - n;
                         return (new_it);
                     }
                     friend bool    operator==(iterator const & lhs, iterator const & rhs) {
-                        return (lhs._ptr == rhs._ptr);
+                        return (lhs.ptr == rhs.ptr);
                     }
                     friend bool    operator!=(iterator const & lhs, iterator const & rhs) {
-                        return (lhs._ptr != rhs._ptr);
+                        return (lhs.ptr != rhs.ptr);
                     }
                     friend bool operator<(iterator const & lhs, iterator const & rhs) {
-                        return (lhs._ptr < rhs._ptr);
+                        return (lhs.ptr < rhs.ptr);
                     }
                     friend bool operator>(iterator const & lhs, iterator const & rhs) {
-                        return (lhs._ptr > rhs._ptr);
+                        return (lhs.ptr > rhs.ptr);
                     }
                     friend bool operator<=(iterator const & lhs, iterator const & rhs) {
-                        return (lhs._ptr <= rhs._ptr);
+                        return (lhs.ptr <= rhs.ptr);
                     }
                     friend bool operator>=(iterator const & lhs, iterator const & rhs) {
-                        return (lhs._ptr >= rhs._ptr);
+                        return (lhs.ptr >= rhs.ptr);
                     }
                     iterator & operator+=(difference_type n) {
                         *this = *this + n;
@@ -139,7 +137,7 @@ namespace ft
                         return (*this);
                     }
                     value_type operator[](difference_type n) const {
-                        return (*(this->_ptr + n));
+                        return (*(this->ptr + n));
                     }
             };
 
@@ -159,15 +157,15 @@ namespace ft
 
                 public:
 
-                    pointer _ptr;
+                    pointer ptr;
 
                 public:
 
                     // COPLIEN
-                    const_iterator() : _ptr(NULL) {
+                    const_iterator() : ptr(NULL) {
 
                     }
-                    const_iterator(const pointer ptr) : _ptr(ptr) {
+                    const_iterator(const pointer ptr) : ptr(ptr) {
 
                     }
                     const_iterator(const_iterator const & src) {
@@ -177,25 +175,25 @@ namespace ft
                         *this = src;
                     }
                     const_iterator & operator=(const_iterator const & rhs) {
-                        this->_ptr = rhs._ptr;
+                        this->ptr = rhs.ptr;
                         return *this;
                     }
                     // we can do (const_it = it) but not the opposite for obvious reasons
                     const_iterator & operator=(iterator const & rhs) {
-                        this->_ptr = rhs._ptr;
+                        this->ptr = rhs.ptr;
                         return *this;
                     }
                     ~const_iterator() {}
 
                     // OVERLOADS
                     const reference   operator*() const {
-                        return (*(this->_ptr));
+                        return (*(this->ptr));
                     }
                     const pointer operator->() const {
                         return (this->ptr);
                     }
                     const_iterator & operator++() {
-                        this->_ptr++;
+                        this->ptr++;
                         return *this;
                     }
                     const_iterator operator++(int) {
@@ -204,7 +202,7 @@ namespace ft
                         return (tmp);
                     }
                     const_iterator & operator--() {
-                        this->_ptr--;
+                        this->ptr--;
                         return (*this);
                     }
                     const_iterator operator--(int) {
@@ -214,38 +212,38 @@ namespace ft
                     }
                     // substract two iterators
                     difference_type operator-(const_iterator const & rhs) const {
-                        return (this->_ptr - rhs._ptr);
+                        return (this->ptr - rhs.ptr);
                     }
                     // add or substract const_iterator with an integer value
                     friend const_iterator operator+(const_iterator const & it, difference_type n) {
                         const_iterator    new_it;
 
-                        new_it._ptr = it._ptr + n;
+                        new_it.ptr = it.ptr + n;
                         return (new_it);
                     }
                     const_iterator operator-(difference_type n) const {
                         const_iterator    new_it;
 
-                        new_it._ptr = this->_ptr - n;
+                        new_it.ptr = this->ptr - n;
                         return (new_it);
                     }
                     friend bool    operator==(const_iterator const & lhs, const_iterator const & rhs) {
-                        return (lhs._ptr == rhs._ptr);
+                        return (lhs.ptr == rhs.ptr);
                     }
                     friend bool    operator!=(const_iterator const & lhs, const_iterator const & rhs) {
-                        return (lhs._ptr != rhs._ptr);
+                        return (lhs.ptr != rhs.ptr);
                     }
                     friend bool operator<(const_iterator const & lhs, const_iterator const & rhs) {
-                        return (lhs._ptr < rhs._ptr);
+                        return (lhs.ptr < rhs.ptr);
                     }
                     friend bool operator>(const_iterator const & lhs, const_iterator const & rhs) {
-                        return (lhs._ptr > rhs._ptr);
+                        return (lhs.ptr > rhs.ptr);
                     }
                     friend bool operator<=(const_iterator const & lhs, const_iterator const & rhs) {
-                        return (lhs._ptr <= rhs._ptr);
+                        return (lhs.ptr <= rhs.ptr);
                     }
                     friend bool operator>=(const_iterator const & lhs, const_iterator const & rhs) {
-                        return (lhs._ptr >= rhs._ptr);
+                        return (lhs.ptr >= rhs.ptr);
                     }
                     const_iterator & operator+=(difference_type n) {
                         *this = *this + n;
@@ -256,7 +254,7 @@ namespace ft
                         return (*this);
                     }
                     value_type operator[](difference_type n) const {
-                        return (*(this->_ptr + n));
+                        return (*(this->ptr + n));
                     }
             };
 
@@ -276,7 +274,8 @@ namespace ft
 
             /* --- CONSTRUCTORS --- */
             // 1. default
-            explicit vector()
+            explicit vector(const allocator_type & alloc = allocator_type())
+                : _allocator(alloc)
             {
                 this->_data = this->_allocator.allocate(0);
                 this->_capacity = 0;
@@ -284,7 +283,9 @@ namespace ft
             }
 
             // 2. fill
-            explicit vector(size_type n, const value_type & val = value_type())
+            explicit vector(size_type n, const value_type & val = value_type(),
+                            const allocator_type & alloc = allocator_type())
+                        : _allocator(alloc)
             {
                 this->_data = this->_allocator.allocate(n);
                 this->_capacity = n;
@@ -298,7 +299,9 @@ namespace ft
             // the template is not valid and the program will know to use the -FILL constructor-
             template < class InputIterator >
             vector(InputIterator first, InputIterator last,
-				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = NULL)
+                    const allocator_type & alloc = allocator_type(),
+				    typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = NULL)
+                : _allocator(alloc)
             {
                 long    distance = std::distance(first, last);
                 int     i;
@@ -320,6 +323,7 @@ namespace ft
             {
                 size_type   x_size = x.size();
 
+                this->_allocator = x._allocator;
                 this->_data = this->_allocator.allocate(x_size);
                 this->_capacity = x_size;
                 this->_size = x_size;
