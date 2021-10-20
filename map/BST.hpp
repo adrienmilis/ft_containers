@@ -25,13 +25,27 @@ namespace ft
                     node        *left;
                     node        *right;
                     int         is_left;
-                    int         is_right;
                     // key_type    key;
                     // mapped_type value;
 
-                    node & operator++() {
-                        
-                        return *this;
+                    node & operator++()
+                    {
+                        node    *incr;
+
+                        incr = this;
+                        if (incr->right)
+                        {
+                            incr = incr->right;
+                            while (incr->left)
+                                incr = incr->left;
+                        }   
+                        else
+                        {
+                            while (!incr->is_left)
+                                incr = incr->parent;
+                            incr = incr->parent;
+                        }
+                        return *incr;
                     }
             };
 
@@ -53,6 +67,7 @@ namespace ft
                     node->left = NULL;
                     node->right = NULL;
                     node->parent = NULL;
+                    node->is_left = 0;
                     this->_size++;
                 }
                 else if (!comp(new_key, node->pair.first)
@@ -61,11 +76,13 @@ namespace ft
                 else if (comp(new_key, node->pair.first))   // element goes to the left
                 {
                     node->left = r_insert(new_key, new_value, node->left);
+                    node->left->is_left = 1;
                     node->left->parent = node;
                 }
                 else if (!comp(new_key, node->pair.first))  // element goes to the right
                 {
                     node->right = r_insert(new_key, new_value, node->right);
+                    node->right->is_left = 0;
                     node->right->parent = node;
                 }
                 return node;
@@ -76,7 +93,8 @@ namespace ft
                 if (node == NULL)
                     return ;
                 print_tree_sorted(node->left);
-                std::cout << "key: " << node->pair.first << ", value: " << node->pair.second << std::endl;
+                std::string str = (node->is_left == 1) ? "Left node" : "Right node";
+                std::cout << str << " - " << "key: " << node->pair.first << ", value: " << node->pair.second << std::endl;
                 print_tree_sorted(node->right);
             }
 
@@ -84,6 +102,7 @@ namespace ft
             {
                 if (node_to_copy == NULL)
                     return ;
+                // whatever the order, insert adds automatically in the right order
                 deep_copy(node_to_copy->left);
                 deep_copy(node_to_copy->right);
                 if (node_to_copy)

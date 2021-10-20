@@ -65,7 +65,7 @@ namespace ft
 
                 public:
 
-                    typename search_tree::node   *current_node;
+                    typename search_tree::node  *current_node;
 
                     // COPLIEN
                     iterator() : current_node(NULL) {}
@@ -88,16 +88,16 @@ namespace ft
                     friend bool operator!=(iterator const & lhs, iterator const & rhs) {
                         return (lhs.current_node != rhs.current_node);
                     }
+                    // TO DO verifier ces deux là
                     reference   operator*() const {
                         return (current_node->pair);
                     }
                     pointer operator->() const {
-                        return (this->current_node);
+                        return (current_node->pair);
                     }
                     // INCREMENT / DECREMENT
                     iterator & operator++() {
-                        ++this->current_node;
-                        return *this;
+                        current_node = &(++(*current_node));
                     }
             };
 
