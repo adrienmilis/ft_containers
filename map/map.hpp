@@ -31,6 +31,7 @@ namespace ft
         private:
 
             typedef BST <key_type, mapped_type, key_compare>    search_tree;
+            typedef typename search_tree::node                  tree_node;
             
 
         // typedef iterator
@@ -74,6 +75,8 @@ namespace ft
                         *this = src;
                     }
 
+                    iterator(typename search_tree::node  *node) : current_node(node) {}
+
                     iterator & operator=(iterator const & rhs) {
                         this->current_node = rhs.current_node;
                         return *this;
@@ -111,7 +114,7 @@ namespace ft
             // 1. default
             explicit map(const key_compare & comp = key_compare(),
                             const allocator_type& alloc = allocator_type())
-                : _bst(), _comp(comp), _allocator(alloc) {}
+                : _bst(), _allocator(alloc), _comp(comp) {}
 
             // // 2. range (insert value by value)
             // template <class InputIterator>
@@ -147,6 +150,11 @@ namespace ft
             }
 
             /* --- ITERATORS --- */
+            iterator    begin()
+            {
+                return (iterator(_bst.minimum()));
+            }
+
             /* --- CAPACITY --- */
             bool    empty() const
             {
@@ -166,6 +174,18 @@ namespace ft
 
             /* --- MODIFIERS --- */
             // 1. insert: single element
+            pair<iterator, bool> insert(const value_type & val)
+            {
+                bool                           new_elem = false;
+                tree_node                      *new_elem_address = NULL;
+                ft::pair<tree_node*, bool>    pair_node_bool
+                    = make_pair(new_elem_address, new_elem);
+
+                _bst.insert(val.first, val.second, &pair_node_bool);
+                ft::pair<iterator, bool>    pair_iterator_bool
+                    = make_pair(iterator(pair_node_bool.first), pair_node_bool.second);
+                return (pair_iterator_bool);
+            }
             // 2. insert: with hint
             // 3. insert: range
             /* --- OBSERVERS --- */
