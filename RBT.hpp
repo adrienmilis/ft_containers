@@ -160,14 +160,14 @@ namespace ft
                 node    *uncle;
                 while (k->parent->color == RED)
                 {
-                    if (k->parent = k->parent->parent->right)   // P is right child
+                    if (k->parent == k->parent->parent->right)   // P is right child
                     {
                         uncle = k->parent->parent->left;
                         if (uncle->color == RED)
                         {
                             k->parent->color = BLACK;
                             uncle->color = BLACK;
-                            k->parent->parent = RED;
+                            k->parent->parent->color = RED;
                             k = k->parent->parent;              // we prepare for the next loop (fixing changes going up the tree)
                         }
                         else
@@ -189,7 +189,7 @@ namespace ft
                         {
                             k->parent->color = BLACK;
                             uncle->color = BLACK;
-                            k->parent->parent = RED;
+                            k->parent->parent->color = RED;
                             k = k->parent->parent;
                         }
                         else
@@ -204,7 +204,7 @@ namespace ft
                             right_rotate(k->parent->parent);
                         }
                     }
-                    if (k == root)
+                    if (k == _root)
                         break;
                 }
             }
@@ -242,7 +242,7 @@ namespace ft
                 new_node->parent = parent_node;
                 new_node->left = NULL;
                 new_node->right = NULL;
-                new_node->color = (node->parent) ? RED : BLACK;
+                new_node->color = (new_node->parent) ? RED : BLACK;
                 if (parent_node == NULL)
                     this->_root = new_node;
                 else if (comp(new_node->value.first, parent_node->value.first))
