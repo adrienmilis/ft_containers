@@ -3,7 +3,7 @@
 
 #include <functional>   // std::less
 #include <iterator>     // std::bidirectional_iterator_tag
-#include "BST.hpp"
+#include "RBT.hpp"
 #include "../utils.hpp"
 
 namespace ft
@@ -30,7 +30,7 @@ namespace ft
 
         private:
 
-            typedef BST <key_type, mapped_type, key_compare>    search_tree;
+            typedef RBT<key_type, mapped_type, key_compare>    search_tree;
             typedef typename search_tree::node                  tree_node;
             
 
@@ -42,7 +42,7 @@ namespace ft
     
         private:
 
-            search_tree     _bst;
+            search_tree     _rbt;
             allocator_type  _allocator;
             Compare         _comp;
 
@@ -114,14 +114,14 @@ namespace ft
             // 1. default
             explicit map(const key_compare & comp = key_compare(),
                             const allocator_type& alloc = allocator_type())
-                : _bst(), _allocator(alloc), _comp(comp) {}
+                : _rbt(), _allocator(alloc), _comp(comp) {}
 
             // // 2. range (insert value by value)
             // template <class InputIterator>
             // map (InputIterator first, InputIterator last,
             //         const key_compare& comp = key_compare(),
             //         const allocator_type& alloc = allocator_type())
-            //     : _BST(), _comp(comp), _allocator(alloc)
+            //     : _rbt(), _comp(comp), _allocator(alloc)
             // {
             //     while (first != last)
             //     {
@@ -132,7 +132,7 @@ namespace ft
             // 3. copy
             map(const map & x)
             {
-                this->_bst = x._bst;
+                this->_rbt = x._rbt;
                 this->_allocator = x._allocator;
                 this->_comp = x._comp;
             }
@@ -144,26 +144,26 @@ namespace ft
             // the container preserves its current allocator
             map & operator=(const map & x)
             {
-                _bst.clear();
-                this->_bst = x._bst;
+                _rbt.clear();
+                this->_rbt = x._rbt;
                 this->_comp = x._comp;
             }
 
             /* --- ITERATORS --- */
             iterator    begin()
             {
-                return (iterator(_bst.minimum()));
+                return (iterator(_rbt.minimum()));
             }
 
             /* --- CAPACITY --- */
             bool    empty() const
             {
-                return (_bst.size() == 0);
+                return (_rbt.size() == 0);
             }
 
             size_type   size() const
             {
-                return (_bst.size());
+                return (_rbt.size());
             }
 
             size_type   max_size() const
@@ -181,7 +181,7 @@ namespace ft
                 ft::pair<tree_node*, bool>    pair_node_bool
                     = make_pair(new_elem_address, new_elem);
 
-                _bst.insert(val.first, val.second, &pair_node_bool);
+                _rbt.insert(val.first, val.second, &pair_node_bool);
                 ft::pair<iterator, bool>    pair_iterator_bool
                     = make_pair(iterator(pair_node_bool.first), pair_node_bool.second);
                 return (pair_iterator_bool);
