@@ -1,21 +1,26 @@
 #include <map>
 #include <iostream>
+#include "../map/map.hpp"
+#include "../utils.hpp"
 
 int main()
 {
-    std::map<char, int> m;
+    ft::map<char, int> m;
 
-    m['c'] = 1;
-    m['y'] = 4;
-    m['b'] = 7;
+    m.insert(ft::make_pair('c', 1));
+    m.insert(ft::make_pair('b', 7));
+    m.insert(ft::make_pair('y', 4));
+    // m['c'] = 1;
+    // m['y'] = 4;
+    // m['b'] = 7;
 
-    std::map<char, int>::iterator   it = m.begin();
-    std::map<char, int>::iterator   ite = m.end();
+    ft::map<char, int>::iterator   it = m.begin();
+    // ft::map<char, int>::iterator   ite = m.end();
 
-    while (it != ite)
-    {
-        std::cout << it->first << ", " << it->second << std::endl;
-        // std::cout << *it << std::endl;   // does not compile
+    // while (it != ite)
+    // {
+        // std::cout << it->first << ", " << it->second << std::endl;
+        std::cout << (*it).first << std::endl;
         ++it;
-    }
+    // }
 }

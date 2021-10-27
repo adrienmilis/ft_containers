@@ -16,15 +16,15 @@ namespace ft
     {
         public:
 
-            typedef pair<key_type, mapped_type>   value_type;
+            typedef ft::pair<key_type, mapped_type>   value_type;
 
             struct node
             {
-                    value_type  value;
-                    node        *parent;
-                    node        *left;
-                    node        *right;
-                    int         color;
+                value_type  value;
+                node        *parent;
+                node        *left;
+                node        *right;
+                int         color;
             };
 
 
@@ -33,7 +33,7 @@ namespace ft
             node                    *_root;
             node                    *NULLNODE;
             std::allocator<node>    _allocator;
-            size_t                  size;
+            size_t                  _size;
             key_compare             comp;
 
             // recursive print
@@ -84,7 +84,7 @@ namespace ft
                 while (current->right != NULLNODE)
                     current = current->right;
                 return (current);
-            }
+            }   
 
             void fix_delete(node* x)
             {
@@ -402,7 +402,7 @@ namespace ft
                 NULLNODE->right = NULL;
                 NULLNODE->color = BLACK;
                 _root = NULLNODE;
-                // NULLNODE->value is undefined
+                this->_size = 0;
             }
 
             RBT(RBT const & src) : _allocator(), comp()
@@ -425,7 +425,10 @@ namespace ft
             node    *clear(node *t)
             {
                 if (t == NULLNODE)
+                {
+                    this->_size = 0;
                     return NULL;
+                }
                 clear(t->left);
                 clear(t->right);
                 this->_allocator.deallocate(t, 1);
@@ -434,11 +437,13 @@ namespace ft
 
             RBT & operator=(RBT const & rhs)
             {
+                this->clear(_root);
+                this->_size = rhs._size;
                 deep_copy(rhs._root, rhs);
                 return (*this);
             }
 
-            void    insert(value_type new_pair)
+            ft::pair<node*, bool>   insert(value_type new_pair)
             {
                 node    *node_down = this->_root;
                 node    *parent_node = NULLNODE;
@@ -451,7 +456,7 @@ namespace ft
                             !comp(node_down->value.first, new_pair.first))
                     {
                         node_down->value.second = new_pair.second;
-                        return ;
+                        return (ft::make_pair(node_down, false));
                     }
                     else if (comp(new_pair.first, node_down->value.first))          // new key < current key
                         node_down = node_down->left;
@@ -471,14 +476,15 @@ namespace ft
                 else
                     parent_node->right = new_node;
 
+                ++this->_size;
                 if (!new_node->parent) {
                     new_node->color = BLACK;
-                    return ;
+                    return (ft::make_pair(new_node, true));
                 }
                 if (!new_node->parent->parent)
-                    return ;
-
-                fix_insert(new_node);   
+                    return (ft::make_pair(new_node, true));
+                fix_insert(new_node);
+                return (ft::make_pair(new_node, true));
             }
 
             node    *search(key_type key_to_find)
@@ -528,6 +534,7 @@ namespace ft
             void    delete_node(key_type key_to_delete)
             {
                 delete_node(_root, key_to_delete);
+                this->_size--;
             }
 
             node    *get_root()
@@ -538,6 +545,21 @@ namespace ft
             node    *get_nullnode()
             {
                 return this->NULLNODE;
+            }
+
+            size_t  size()
+            {
+                return this->_size;
+            }
+
+            node    *min()
+            {
+                return min(this->_root);
+            }
+
+            node    *max()
+            {
+                return max(this->_root);
             }
     };
 }

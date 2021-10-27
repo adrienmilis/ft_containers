@@ -19,7 +19,8 @@ namespace ft
 
             typedef Key                                         key_type;
             typedef T                                           mapped_type;
-            typedef ft::pair<const key_type, mapped_type>       value_type;
+            // TO DO: ON A DROPPE LE CONST ICI !!! ATTENTION
+            typedef ft::pair<key_type, mapped_type>             value_type;
             typedef Compare                                     key_compare;
             typedef Alloc                                       allocator_type;
             typedef typename allocator_type::reference          reference;
@@ -67,6 +68,7 @@ namespace ft
                 public:
 
                     typename search_tree::node  *current_node;
+                    search_tree                 *rbt;
 
                     // COPLIEN
                     iterator() : current_node(NULL) {}
@@ -75,7 +77,7 @@ namespace ft
                         *this = src;
                     }
 
-                    iterator(typename search_tree::node  *node) : current_node(node) {}
+                    iterator(tree_node *node, search_tree *rbt) : current_node(node), rbt(rbt) {}
 
                     iterator & operator=(iterator const & rhs) {
                         this->current_node = rhs.current_node;
@@ -93,15 +95,32 @@ namespace ft
                     }
                     // TO DO verifier ces deux là
                     reference   operator*() const {
-                        return (current_node->pair);
+                        return (current_node->value);
                     }
                     pointer operator->() const {
-                        return (current_node->pair);
+                        return (&current_node->value);
                     }
                     // INCREMENT / DECREMENT
                     iterator & operator++() {
-                        current_node = &(++(*current_node));
+                        this->current_node = this->rbt->successor(current_node);
+                        return (*this);
                     }
+                    iterator operator++(int) {
+                        iterator tmp = *this;
+                        this->operator++();
+                        return (tmp);
+                    }
+                    
+                    iterator & operator--() {
+                        this->current_node = this->rbt.predecessor(current_node);
+                        return (*this);
+                    }
+                    iterator operator--(int) {
+                        iterator tmp = *this;
+                        this->operator--();
+                        return (tmp);
+                    }
+
             };
 
             /*  
@@ -152,7 +171,7 @@ namespace ft
             /* --- ITERATORS --- */
             iterator    begin()
             {
-                return (iterator(_rbt.minimum()));
+                return (iterator(_rbt.min(), &this->_rbt));
             }
 
             /* --- CAPACITY --- */
@@ -174,17 +193,10 @@ namespace ft
 
             /* --- MODIFIERS --- */
             // 1. insert: single element
-            pair<iterator, bool> insert(const value_type & val)
+            ft::pair<iterator, bool> insert(const value_type & val)
             {
-                bool                           new_elem = false;
-                tree_node                      *new_elem_address = NULL;
-                ft::pair<tree_node*, bool>    pair_node_bool
-                    = make_pair(new_elem_address, new_elem);
-
-                _rbt.insert(val.first, val.second, &pair_node_bool);
-                ft::pair<iterator, bool>    pair_iterator_bool
-                    = make_pair(iterator(pair_node_bool.first), pair_node_bool.second);
-                return (pair_iterator_bool);
+                ft::pair<tree_node*, bool> pair = _rbt.insert(val);
+                return (ft::make_pair(iterator(pair.first, &this->_rbt), pair.second));
             }
             // 2. insert: with hint
             // 3. insert: range
