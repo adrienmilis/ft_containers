@@ -206,7 +206,7 @@ namespace ft
             //     // find the replacement x for y
             //     if (current_node->left == NULLNODE) {
             //         x = current_node->right;                            // x has replaced the node to delete. We'll have to fix from x afterwards
-            //         transplant(current_node, current_node->right);      // if both children are null, then the node is just deleted.
+            //         transplant(current_node, current_node->right);      D
             //     }
             //     else if (current_node->right == NULLNODE) {
             //         x = current_node->left;
@@ -240,38 +240,43 @@ namespace ft
 		        node    *z = NULLNODE;
 		        node    *x;
                 node    *y;
-		        while (curr_node != NULLNODE){
+
+		        while (curr_node != NULLNODE)
+                {
 		        	if (curr_node->value.first == key) {
 		        		z = curr_node;
 		        	}
-
-		        	if (curr_node->value.first <= key) {
+		        	if (curr_node->value.first <= key)
 		        		curr_node = curr_node->right;
-		        	} else {
+		        	else
 		        		curr_node = curr_node->left;
-		        	}
 		        }
 
-		        if (z == NULLNODE) {
-		        	std::cout<<"Couldn't find key in the tree"<<std::endl;
-		        	return;
-		        } 
+		        if (z == NULLNODE)
+		        	return;     // key not found so couldn't delete entry
 
 		        y = z;
 		        int y_original_color = y->color;
+                // find the replacement x for y
 		        if (z->left == NULLNODE) {
-		        	x = z->right;
-		        	transplant(z, z->right);
-		        } else if (z->right == NULLNODE) {
+		        	x = z->right;               // x has replaced the node to delete (z). We'll have to fix from x afterwards
+		        	transplant(z, z->right);    // if both children are null, the node is just deleted
+                }
+                else if (z->right == NULLNODE) {
 		        	x = z->left;
 		        	transplant(z, z->left);
-		        } else {
+		        }
+                else
+                {
+                    // we replace the node to delete by y, the min of the right branch
+                    // as in a BST deletion
 		        	y = min(z->right);
 		        	y_original_color = y->color;
 		        	x = y->right;
-		        	if (y->parent == z) {
+		        	if (y->parent == z) // if y is a child of node to be deleted
 		        		x->parent = y;
-		        	} else {
+		        	else
+                    {
 		        		transplant(y, y->right);
 		        		y->right = z->right;
 		        		y->right->parent = y;
@@ -282,10 +287,10 @@ namespace ft
 		        	y->left->parent = y;
 		        	y->color = z->color;
 		        }
-		        if (y_original_color == 0){
+                this->_allocator.deallocate(z, 1);
+		        if (y_original_color == 0)
 		        	fix_delete(x);
-		        }
-	}
+	        }
 
             void left_rotate(node * x)
             {
@@ -303,9 +308,9 @@ namespace ft
 		        	x->parent->right = y;
 		        y->left = x;
 		        x->parent = y;
-	}
+	        }
 
-	// rotate right at node x
+	        // rotate right at node x
 	        void right_rotate(node * x)
             {
 	        	node    *y = x->left;
@@ -336,8 +341,7 @@ namespace ft
                         {
                             k->parent->color = BLACK;
                             uncle->color = BLACK;
-                            if (k->parent->parent != this->_root)
-                                k->parent->parent->color = RED;
+                            k->parent->parent->color = RED;
                             k = k->parent->parent;              // we prepare for the next loop (fixing changes going up the tree)
                         }
                         else
@@ -348,8 +352,7 @@ namespace ft
                                 right_rotate(k);    // right rotation at P
                             }
                             k->parent->color = BLACK;
-                            if (k->parent->parent != this->_root)
-                                k->parent->parent->color = RED;
+                            k->parent->parent->color = RED;
                             left_rotate(k->parent->parent);     // left rotation at G
                         }
                     }
@@ -360,8 +363,7 @@ namespace ft
                         {
                             k->parent->color = BLACK;
                             uncle->color = BLACK;
-                            if (k->parent->parent != this->_root)
-                                k->parent->parent->color = RED;
+                            k->parent->parent->color = RED;
                             k = k->parent->parent;
                         }
                         else
@@ -372,14 +374,14 @@ namespace ft
                                 left_rotate(k);
                             }
                             k->parent->color = BLACK;
-                            if (k->parent->parent != this->_root)
-                                k->parent->parent->color = RED;
+                            k->parent->parent->color = RED;
                             right_rotate(k->parent->parent);
                         }
                     }
                     if (k == _root)
                         break;
                 }
+                this->_root->color = BLACK;
             }
 
             void    deep_copy(node *node_to_copy)
