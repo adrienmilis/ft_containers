@@ -51,7 +51,7 @@ namespace ft
 		           }
 
                    std::string sColor = root->color ? "RED" : "BLACK";
-		           std::cout << root->value.first << ":" << root->value.second << "(" << sColor << ")" << std::endl;
+		           std::cout << "[" << root->value.first << "]" << " (" << sColor << ")" << std::endl;
 		           printHelper(root->left, indent, false);
 		           printHelper(root->right, indent, true);
 		        }
@@ -103,7 +103,7 @@ namespace ft
         					s = x->parent->right;
         				}
 
-        				if (s->left->color == 0 && s->right->color == BLACK)
+        				if (s->left->color == BLACK && s->right->color == BLACK)
                         {
         					// case 3.2
         					s->color = RED;
@@ -111,7 +111,7 @@ namespace ft
         				}
                         else
                         {
-        					if (s->right->color == BLACK)
+        					if (s->right->color == BLACK && s->left->color == RED)
                             {
         						// case 3.3
         						s->left->color = BLACK;
@@ -140,7 +140,7 @@ namespace ft
         					s = x->parent->left;
         				}
 
-        				if (s->right->color == BLACK && s->right->color == BLACK)
+        				if (s->right->color == BLACK && s->left->color == BLACK)
                         {
         					// case 3.2
         					s->color = RED;
@@ -148,7 +148,7 @@ namespace ft
         				}
                         else
                         {
-        					if (s->left->color == BLACK)
+        					if (s->left->color == BLACK && s->right->color == RED)
                             {
         						// case 3.3
         						s->right->color = BLACK;
@@ -167,20 +167,17 @@ namespace ft
         			} 
         		}
         		x->color = BLACK;
-    	}
+    	    }
 
             // replace x by y by changing pointers
             void    transplant(node *x, node *y)
             {
-                if (x->parent == NULLNODE) {
+                if (x->parent == NULLNODE)
                     this->_root = y;
-                }
-                else if (x == x->parent->left) {
+                else if (x == x->parent->left)
                     x->parent->left = y;
-                }
-                else if (x == x->parent->right) {
-                    x->parent->right = x;
-                }
+                else if (x == x->parent->right)
+                    x->parent->right = y;
                 y->parent = x->parent;
             }
 
@@ -287,7 +284,7 @@ namespace ft
 		        	y->left->parent = y;
 		        	y->color = z->color;
 		        }
-                this->_allocator.deallocate(z, 1);
+                // this->_allocator.deallocate(z, 1);
 		        if (y_original_color == 0)
 		        	fix_delete(x);
 	        }
@@ -384,15 +381,15 @@ namespace ft
                 this->_root->color = BLACK;
             }
 
-            void    deep_copy(node *node_to_copy)
+            void    deep_copy(node *node_to_copy, RBT const & rhs)
             {
-                if (node_to_copy == NULLNODE)
+                if (node_to_copy == rhs.NULLNODE)
                     return ;
                 // whatever the order, insert adds automatically in the right order
-                deep_copy(node_to_copy->left);
-                deep_copy(node_to_copy->right);
-                if (node_to_copy)
-                    insert(node_to_copy->pair.first, node_to_copy->pair.second);
+                deep_copy(node_to_copy->left, rhs);
+                deep_copy(node_to_copy->right, rhs);
+                if (node_to_copy != rhs.NULLNODE)
+                    insert(ft::make_pair(node_to_copy->value.first, node_to_copy->value.second));
             }
 
         public:
@@ -408,9 +405,21 @@ namespace ft
                 // NULLNODE->value is undefined
             }
 
-            ~RBT() {
+            RBT(RBT const & src) : _allocator(), comp()
+            {
+                NULLNODE = this->_allocator.allocate(1);
+                NULLNODE->parent = NULL;
+                NULLNODE->left = NULL;
+                NULLNODE->right = NULL;
+                NULLNODE->color = BLACK;
+                _root = NULLNODE;
+                *this = src;
+            }
+
+            ~RBT()
+            {
                 _root = clear(_root);
-                this->_allocator.deallocate(NULLNODE, 1);
+                this->_allocator.deallocate(this->NULLNODE, 1);
             }
 
             node    *clear(node *t)
@@ -425,7 +434,7 @@ namespace ft
 
             RBT & operator=(RBT const & rhs)
             {
-                deep_copy(rhs._root);
+                deep_copy(rhs._root, rhs);
                 return (*this);
             }
 

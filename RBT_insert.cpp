@@ -36,4 +36,34 @@ int main()
     tree.insert(ft::make_pair('y', 35));
     tree.prettyPrint();
 
+    RBT_char_int    new_tree = tree;
+
+    tree.delete_node('g');  // debugger mtn le delete node !!
+    tree.delete_node('g');
+    tree.delete_node('z');
+    tree.delete_node('m');
+    tree.delete_node('b');
+    tree.delete_node('c');
+    tree.delete_node('x');
+    tree.delete_node('f');
+    tree.delete_node('y');
+    tree.delete_node('t');
+    tree.delete_node('d');
+    tree.delete_node('v');
+    tree.delete_node('w');
+    tree.delete_node('s');
+    tree.delete_node('u');
+    tree.delete_node('i');
+    tree.delete_node('o');
+    tree.delete_node('p');
+    tree.delete_node('n');
+    tree.delete_node('g');
+    tree.delete_node('m');
+    tree.delete_node('e');
+    tree.delete_node('r');
+    tree.delete_node('y');
+    // std::cout << tree.get_root() << std::endl;
+    // std::cout << new_tree.get_root() << std::endl;
+    new_tree.prettyPrint();
+
 }
