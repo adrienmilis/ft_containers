@@ -2,7 +2,7 @@
 # define RBT_HPP
 
 #include <iostream>
-#include "../utils.hpp"
+#include "../utils/utils.hpp"
 
 #define RED     1
 #define BLACK   0
@@ -16,7 +16,7 @@ namespace ft
     {
         public:
 
-            typedef ft::pair<key_type, mapped_type>   value_type;
+            typedef ft::pair<const key_type, mapped_type>   value_type;
 
             struct node
             {
@@ -25,6 +25,11 @@ namespace ft
                 node        *left;
                 node        *right;
                 int         color;
+
+                node(value_type value) :
+                    value(value), parent(NULL),
+                    left(NULL), right(NULL),
+                    color(BLACK) {}
             };
 
 
@@ -180,57 +185,6 @@ namespace ft
                     x->parent->right = y;
                 y->parent = x->parent;
             }
-
-            // void    delete_node(node *current_node, key_type key_to_delete)
-            // {
-            //     node    *x;
-            //     node    *y;
-
-            //     while (current_node != NULLNODE)
-            //     {
-            //         if (comp(current_node->value.first, key_to_delete))
-            //             current_node = current_node->right;
-            //         else if (comp(key_to_delete, current_node->value.first))
-            //             current_node = current_node->left;
-            //         else
-            //             break ;
-            //     }
-            //     if (current_node == NULLNODE)
-            //         return ;    // key not found so couldn't delete entry
-
-            //     y = current_node;
-            //     int y_original_color = y->color;
-            //     // find the replacement x for y
-            //     if (current_node->left == NULLNODE) {
-            //         x = current_node->right;                            // x has replaced the node to delete. We'll have to fix from x afterwards
-            //         transplant(current_node, current_node->right);      D
-            //     }
-            //     else if (current_node->right == NULLNODE) {
-            //         x = current_node->left;
-            //         transplant(current_node, current_node->left);
-            //     }
-            //     else {
-            //         // we replace the node to delete by y, the min of the right branch
-            //         // as in a BST deletion
-            //         y = min(current_node->right);
-            //         y_original_color = y->color;
-            //         x = y->right;
-            //         if (y->parent == current_node)  // if y is a child of node to be deleted
-            //                 x->parent = y;
-            //         else {
-            //             transplant(y, y->right);
-            //             y->right = current_node->right;
-            //             y->right->parent = y;
-            //         }
-            //         transplant(current_node, y);
-            //             y->left = current_node->left;
-            //             y->left->parent = y;
-            //             y->color = current_node->color;
-            //     }
-            //     // this->_allocator.deallocate(current_node, 1);
-            //     if (y_original_color == BLACK)
-            //         fix_delete(x);  // beware, x might be NULL. It is the node occupying y's original position
-            // }
 
             void delete_node(node *curr_node, int key)
             {
@@ -464,7 +418,8 @@ namespace ft
                         node_down = node_down->right;
                 }
                 new_node = _allocator.allocate(1);
-                new_node->value = new_pair;
+                _allocator.construct(new_node, new_pair);
+                // new_node->value = new_pair;
                 new_node->parent = parent_node;
                 new_node->left = NULLNODE;
                 new_node->right = NULLNODE;

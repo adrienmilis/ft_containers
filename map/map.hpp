@@ -1,10 +1,11 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
+#include <utility>      // remove, std::pair
 #include <functional>   // std::less
 #include <iterator>     // std::bidirectional_iterator_tag
 #include "RBT.hpp"
-#include "../utils.hpp"
+#include "../utils/utils.hpp"
 
 namespace ft
 {
@@ -20,7 +21,7 @@ namespace ft
             typedef Key                                         key_type;
             typedef T                                           mapped_type;
             // TO DO: ON A DROPPE LE CONST ICI !!! ATTENTION
-            typedef ft::pair<key_type, mapped_type>             value_type;
+            typedef ft::pair<const key_type, mapped_type>       value_type;
             typedef Compare                                     key_compare;
             typedef Alloc                                       allocator_type;
             typedef typename allocator_type::reference          reference;
