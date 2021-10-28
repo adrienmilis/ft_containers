@@ -43,7 +43,7 @@ namespace ft
             key_compare             comp;
 
             // recursive print
-            void printHelper(node *root, std::string indent, bool right)
+            void printHelper(node *root, std::string indent, bool right) const
             {
 		        // print the tree structure on the screen
 	   	        if (root != NULLNODE) {
@@ -76,16 +76,15 @@ namespace ft
 
             // min and max from a certain node
             // (can be other than root)
-            node    *min(node *current)
+            node    *min(node *current) const
             {
                 while (current->left != NULLNODE)
-                {
-                    current = current->left;}
+                    current = current->left;
 
                 return (current);
             }
 
-            node    *max(node *current)
+            node    *max(node *current) const
             {
                 while (current->right != NULLNODE)
                     current = current->right;
@@ -347,10 +346,19 @@ namespace ft
                     insert(ft::make_pair(node_to_copy->value.first, node_to_copy->value.second));
             }
 
-            // private default constructor
+            void    print_tree_sorted(node  *curr_node) const
+            {
+                if (curr_node == NULLNODE)
+                    return ;
+                print_tree_sorted(curr_node->left);
+                std::cout << "[" << curr_node->value.first << ":" << curr_node->value.second << "]" << " ";
+                print_tree_sorted(curr_node->right);
+            }
+
             RBT() {}
 
         public:
+
 
             RBT(allocator_type alloc) : _allocator(alloc), comp()
             {
@@ -359,7 +367,7 @@ namespace ft
                 NULLNODE->left = NULL;
                 NULLNODE->right = NULL;
                 NULLNODE->color = BLACK;
-                _root = NULLNODE;
+                this->_root = NULLNODE;
                 this->_size = 0;
             }
 
@@ -446,21 +454,31 @@ namespace ft
                 return (ft::make_pair(new_node, true));
             }
 
-            node    *search(key_type key_to_find)
+            node    *search(key_type key_to_find) const
             {
                 return (recursive_search(this->_root, key_to_find));
             }
 
-            void prettyPrint()
+            void    display_tree() const
             {
 	            if (this->_root != NULLNODE)
     	    	    printHelper(this->_root, "", true);
 	        }
 
-            node    *successor(node *curr)
+            void    display_sorted() const
+            {
+                print_tree_sorted(_root);
+                std::cout << std::endl;
+            }
+
+            node    *successor(node *curr) const
             {
                 node    *parent;
 
+                if (curr == this->max())   // returns address after end for end iterator
+                    return curr + 1;
+                if (curr == this->min() - 1)
+                    return this->min();
                 if (curr->right != NULLNODE)
                     return (min(curr->right));
                 parent = curr->parent;
@@ -475,10 +493,14 @@ namespace ft
                 return parent;
             }
 
-            node    *predecessor(node *curr)
+            node    *predecessor(node *curr) const
             {
                 node    *parent;
 
+                if (curr == this->max() + 1)
+                    return this->max();
+                if (curr == this->min())
+                    return this->min() - 1;
                 if (curr->left != NULLNODE)
                     return (max(curr->left));
                 parent = curr->parent;
@@ -496,27 +518,27 @@ namespace ft
                 this->_size--;
             }
 
-            node    *get_root()
+            node    *get_root() const
             {
                 return this->_root;
             }
 
-            node    *get_nullnode()
+            node    *get_nullnode() const
             {
                 return this->NULLNODE;
             }
 
-            size_t  size()
+            size_t  size() const
             {
                 return this->_size;
             }
 
-            node    *min()
+            node    *min() const
             {
                 return min(this->_root);
             }
 
-            node    *max()
+            node    *max() const
             {
                 return max(this->_root);
             }
