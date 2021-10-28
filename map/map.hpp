@@ -20,7 +20,6 @@ namespace ft
 
             typedef Key                                         key_type;
             typedef T                                           mapped_type;
-            // TO DO: ON A DROPPE LE CONST ICI !!! ATTENTION
             typedef ft::pair<const key_type, mapped_type>       value_type;
             typedef Compare                                     key_compare;
             typedef Alloc                                       allocator_type;
@@ -30,17 +29,18 @@ namespace ft
             typedef typename allocator_type::const_pointer      const_pointer;
             typedef size_t                                      size_type;
 
+            struct iterator;
+            struct const_iterator;
+            typedef ft::reverse_iterator<iterator>                          reverse_iterator;     
+            typedef ft::reverse_iterator<const_iterator>                    const_reverse_iterator;
+            typedef typename ft::iterator_traits<iterator>::difference_type difference_type;
+
         private:
 
             typedef RBT<key_type, mapped_type, key_compare>    search_tree;
             typedef typename search_tree::node                  tree_node;
             
 
-        // typedef iterator
-        // typedef const_iterator
-        // typedef reverse_iterator
-        // typedef const_reverse_iterator
-        // typedef difference_type
     
         private:
 
@@ -65,6 +65,9 @@ namespace ft
                 typedef typename base_iterator::difference_type     difference_type;
                 typedef typename base_iterator::pointer             pointer;
                 typedef typename base_iterator::reference           reference;
+
+                typedef RBT<key_type, mapped_type, key_compare>     search_tree;
+                typedef typename search_tree::node                  tree_node;
 
                 public:
 
@@ -124,6 +127,11 @@ namespace ft
 
             };
 
+            struct const_iterator
+            {
+
+            };
+
             /*  
                 ================
                 MEMBER FUNCTIONS
@@ -134,20 +142,21 @@ namespace ft
             // 1. default
             explicit map(const key_compare & comp = key_compare(),
                             const allocator_type& alloc = allocator_type())
-                : _rbt(), _allocator(alloc), _comp(comp) {}
+                : _rbt(alloc), _allocator(alloc), _comp(comp) {}
 
-            // // 2. range (insert value by value)
-            // template <class InputIterator>
-            // map (InputIterator first, InputIterator last,
-            //         const key_compare& comp = key_compare(),
-            //         const allocator_type& alloc = allocator_type())
-            //     : _rbt(), _comp(comp), _allocator(alloc)
-            // {
-            //     while (first != last)
-            //     {
-                    
-            //     }
-            // }
+            // 2. range (insert value by value)
+            template <class InputIterator>
+            map (InputIterator first, InputIterator last,
+                    const key_compare& comp = key_compare(),
+                    const allocator_type& alloc = allocator_type())
+                : _rbt(alloc), _comp(comp), _allocator(alloc)
+            {
+                while (first != last)
+                {
+                    this->_rbt.insert(*first);
+                    ++first;
+                }
+            }
 
             // 3. copy
             map(const map & x)

@@ -2,7 +2,7 @@
 # define STACK_HPP
 
 #include "../vector/vector.hpp"
-#include "../utils.hpp"
+#include "../utils/utils.hpp"
 
 namespace ft
 {

@@ -4,7 +4,7 @@
 #include <memory>
 #include <stdexcept>
 #include <algorithm>
-#include "../utils.hpp"
+#include "../utils/utils.hpp"
 
 namespace ft
 {
@@ -25,8 +25,8 @@ namespace ft
 
             struct  iterator;
             struct  const_iterator;
-            typedef typename ft::reverse_iterator<iterator>                reverse_iterator;
-            typedef typename ft::reverse_iterator<const_iterator>                 const_reverse_iterator;
+            typedef ft::reverse_iterator<iterator>                 reverse_iterator;
+            typedef ft::reverse_iterator<const_iterator>           const_reverse_iterator;
             typedef typename ft::iterator_traits<iterator>::difference_type difference_type;
 
         // iterators a ajouter

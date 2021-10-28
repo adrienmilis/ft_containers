@@ -17,6 +17,7 @@ namespace ft
         public:
 
             typedef ft::pair<const key_type, mapped_type>   value_type;
+            typedef std::allocator<value_type>              allocator_type;
 
             struct node
             {
@@ -346,9 +347,12 @@ namespace ft
                     insert(ft::make_pair(node_to_copy->value.first, node_to_copy->value.second));
             }
 
+            // private default constructor
+            RBT() {}
+
         public:
 
-            RBT() : _allocator(), comp()
+            RBT(allocator_type alloc) : _allocator(alloc), comp()
             {
                 NULLNODE = this->_allocator.allocate(1);
                 NULLNODE->parent = NULL;
@@ -359,7 +363,7 @@ namespace ft
                 this->_size = 0;
             }
 
-            RBT(RBT const & src) : _allocator(), comp()
+            RBT(RBT const & src) : _allocator(src._allocator), comp()
             {
                 NULLNODE = this->_allocator.allocate(1);
                 NULLNODE->parent = NULL;
@@ -409,7 +413,7 @@ namespace ft
                     if (!comp(new_pair.first, node_down->value.first) &&            // new key == current key
                             !comp(node_down->value.first, new_pair.first))
                     {
-                        node_down->value.second = new_pair.second;
+                        // node_down->value.second = new_pair.second;               // no replacement of value if key already exists 
                         return (ft::make_pair(node_down, false));
                     }
                     else if (comp(new_pair.first, node_down->value.first))          // new key < current key
