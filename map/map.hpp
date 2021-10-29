@@ -326,14 +326,14 @@ namespace ft
             }
 
             /* --- MODIFIERS --- */
-            // 1. insert: single element
+            // 1.1 insert: single element
             ft::pair<iterator, bool> insert(const value_type & val)
             {
                 ft::pair<tree_node*, bool> pair = _rbt.insert(_rbt.get_root(), val);
                 return (ft::make_pair(iterator(pair.first, &this->_rbt), pair.second));
             }
 
-            // 2. insert: with hint
+            // 1.2 insert: with hint
             iterator insert(iterator position, const value_type & val)
             {
                 tree_node    *elem_at_position = _rbt.search(position->first);
@@ -353,9 +353,81 @@ namespace ft
                 
             }
 
-            // 3. insert: range
+            // 1.3 insert: range
+            template <class InputIterator>
+            void    insert(InputIterator first, InputIterator last)
+            {
+                while (first != last)
+                {
+                    this->insert(*first);
+                    ++first;
+                }
+            }
+
+            // 2.1 Erase: position
+            void    erase(iterator position)
+            {
+                _rbt.delete_node(position->first);
+            }
+
+            // 2.2 Erase: key
+            size_type   erase(const key_type & k)
+            {
+                bool element_deleted = _rbt.delete_node(k);
+                return (element_deleted) ? 1 : 0;
+            }
+
+            // 2.3 Erase: range
+            void    erase(iterator first, iterator last)
+            {
+                while (first != last)
+                {
+                    this->erase(first);
+                    ++first;
+                }
+            }
+
+            // 3. Swap
+            void    swap(map & x)
+            {
+                map tmp;
+                
+                std::cout << "test" << std::endl;
+                tmp._allocator = this->_allocator;
+                tmp._comp = this->_comp;
+                tmp._rbt = this->_rbt;
+
+                this->_allocator = x._allocator;
+                this->_comp = x._comp;
+                std::cout << "test2" << std::endl;
+                this->_rbt = x._rbt;
+
+                x._allocator = tmp._allocator;
+                x._comp = tmp._comp;
+                x._rbt = tmp._rbt;
+            }
+
+            // 4.
+
             /* --- OBSERVERS --- */
             /* --- OPERATIONS --- */
+            iterator    find(const key_type & k)
+            {
+                tree_node   *found = _rbt.search(k);
+                if (found == _rbt.get_nullnode())
+                    return this->end();
+                else
+                    return iterator(found, &this->_rbt);
+            }
+
+            const_iterator  find(const key_type & k) const
+            {
+                tree_node   *found = _rbt.search(k);
+                if (found == _rbt.get_nullnode())
+                    return this->end();
+                else
+                    return const_iterator(found, &this->_rbt);
+            }
             /* --- ALLOCATOR --- */
 
 

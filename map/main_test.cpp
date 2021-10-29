@@ -120,23 +120,53 @@ int main(void)
 
     std::cout << std::endl;
     std::cout << "----- 1.3 Insert: range" << std::endl;
-
+    ft::map<char, int>  insert_map2;
+    insert_map2.insert(insert_map.begin(), insert_map.end());
+    display_map(insert_map2);
 
     std::cout << std::endl;
     std::cout << "----- 2.1 Erase: position -----" << std::endl;
-
+    ft::map<char, int>  erase_map = insert_map;
+    ft::map<char, int>::iterator    erase_it = erase_map.find('d');
+    if (erase_it != erase_map.end())
+        erase_map.erase(erase_it);
+    std::cout << "erase d with iterator" << std::endl;
+    display_map(erase_map);
 
     std::cout << std::endl;
     std::cout << "----- 2.2 Erase: key -----" << std::endl;
-
+    erase_map.erase('z');
+    std::cout << "erase z with key" << std::endl;
+    display_map(erase_map);
 
     std::cout << std::endl;
     std::cout << "----- 2.3 Erase: range -----" << std::endl;
-
+    erase_map.erase(erase_map.begin(), ++(++erase_map.begin()));
+    std::cout << "erase map.begin() and map.begin() + 1" << std::endl;
+    display_map(erase_map);
 
     std::cout << std::endl;
     std::cout << "----- 3. Swap -----" << std::endl;
+    ft::map<char,int> foo,bar;
 
+    foo['x']=100;
+    foo['y']=200;
+    display_map(foo);
+
+    bar['a']=11;
+    bar['b']=22;
+    bar['c']=33;
+    display_map(bar);
+
+    foo.swap(bar);
+
+    std::cout << "foo contains:" << std::endl;
+    for (ft::map<char,int>::iterator foo_it = foo.begin(); foo_it!=foo.end(); ++foo_it)
+        std::cout << foo_it->first << " => " << foo_it->second << std::endl;
+
+    std::cout << "bar contains:" << std::endl;
+    for (ft::map<char,int>::iterator bar_it=bar.begin(); bar_it!=bar.end(); ++bar_it)
+        std::cout << bar_it->first << " => " << bar_it->second << std::endl;
 
     std::cout << std::endl;
     std::cout << "----- 4. Clear -----" << std::endl;
@@ -146,10 +176,22 @@ int main(void)
     // std::cout << "OBSERVERS" << std::endl;
     // std::cout << "=========" << std::endl << std::endl;
 
-    // std::cout << std::endl;
-    // std::cout << "==========" << std::endl;
-    // std::cout << "OPERATIONS" << std::endl;
-    // std::cout << "==========" << std::endl << std::endl;
+    std::cout << std::endl;
+    std::cout << "==========" << std::endl;
+    std::cout << "OPERATIONS" << std::endl;
+    std::cout << "==========" << std::endl << std::endl;
+
+    std::cout << "----- Find -----" << std::endl;
+    display_map(insert_map);
+    ft::map<char, int>::iterator find_it = insert_map.find('b');
+    std::cout << "[" << find_it->first << ":" << find_it->second << "]" << std::endl;
+    ft::map<char, int>::const_iterator const_find_it = insert_map.find('z');
+    std::cout << "[" << const_find_it->first << ":" << const_find_it->second << "]" << std::endl;
+
+    char search = 'p';
+    ft::map<char, int>::iterator find_it_notexist = insert_map.find(search);
+    if (find_it_notexist == insert_map.end())
+        std::cout << "Could not find key [" << search << "] in map" << std::endl;
 
     // std::cout << std::endl;
     // std::cout << "=========" << std::endl;

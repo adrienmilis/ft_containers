@@ -186,7 +186,8 @@ namespace ft
                 y->parent = x->parent;
             }
 
-            void delete_node(node *curr_node, int key)
+            // returns true if deleted an element, false otherwise
+            bool delete_node(node *curr_node, int key)
             {
 		        node    *z = NULLNODE;
 		        node    *x;
@@ -204,7 +205,7 @@ namespace ft
 		        }
 
 		        if (z == NULLNODE)
-		        	return;     // key not found so couldn't delete entry
+		        	return false;     // key not found so couldn't delete entry
 
 		        y = z;
 		        int y_original_color = y->color;
@@ -241,6 +242,7 @@ namespace ft
                 // this->_allocator.deallocate(z, 1);
 		        if (y_original_color == 0)
 		        	fix_delete(x);
+                return true;
 	        }
 
             void left_rotate(node * x)
@@ -405,7 +407,9 @@ namespace ft
             {
                 this->clear(_root);
                 this->_size = rhs._size;
+                std::cout << "operator = 1" << std::endl;
                 deep_copy(rhs._root, rhs);
+                std::cout << "operator = 2" << std::endl;
                 return (*this);
             }
 
@@ -455,7 +459,7 @@ namespace ft
             }
 
             // returns either the node with correct key or NULLNODE
-            node    *search(key_type key_to_find) const
+            node    *search(const key_type & key_to_find) const
             {
                 return (recursive_search(this->_root, key_to_find));
             }
@@ -513,10 +517,12 @@ namespace ft
                 return parent;
             }
 
-            void    delete_node(key_type key_to_delete)
+            bool    delete_node(const key_type & key_to_delete)
             {
-                delete_node(_root, key_to_delete);
-                this->_size--;
+                bool element_deleted = delete_node(_root, key_to_delete);
+                if (element_deleted)
+                    this->_size--;
+                return (element_deleted);
             }
 
             node    *get_root() const
