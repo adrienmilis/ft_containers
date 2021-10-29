@@ -64,7 +64,7 @@ namespace ft
 		    }   
 
             // recursive search
-            node    *recursive_search(node *current_node, key_type key_to_find)
+            node    *recursive_search(node *current_node, key_type key_to_find) const
             {
                 if (current_node == NULLNODE || current_node->value.first == key_to_find)
                     return (current_node);
@@ -343,7 +343,7 @@ namespace ft
                 deep_copy(node_to_copy->left, rhs);
                 deep_copy(node_to_copy->right, rhs);
                 if (node_to_copy != rhs.NULLNODE)
-                    insert(ft::make_pair(node_to_copy->value.first, node_to_copy->value.second));
+                    insert(this->_root, ft::make_pair(node_to_copy->value.first, node_to_copy->value.second));
             }
 
             void    print_tree_sorted(node  *curr_node) const
@@ -409,9 +409,9 @@ namespace ft
                 return (*this);
             }
 
-            ft::pair<node*, bool>   insert(value_type new_pair)
+            ft::pair<node*, bool>   insert(node* node_down, value_type new_pair)
             {
-                node    *node_down = this->_root;
+                // node    *node_down = this->_root;
                 node    *parent_node = NULLNODE;
                 node    *new_node;
 
@@ -454,6 +454,7 @@ namespace ft
                 return (ft::make_pair(new_node, true));
             }
 
+            // returns either the node with correct key or NULLNODE
             node    *search(key_type key_to_find) const
             {
                 return (recursive_search(this->_root, key_to_find));

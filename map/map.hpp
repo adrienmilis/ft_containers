@@ -172,7 +172,6 @@ namespace ft
                     return (lhs.current_node == rhs.current_node);
                 }
                 friend bool operator!=(const_iterator const & lhs, const_iterator const & rhs) {
-                    std::cout << "TEST" << std::endl;
                     return (lhs.current_node != rhs.current_node);
                 }
                 const reference   operator*() const {
@@ -225,7 +224,7 @@ namespace ft
             {
                 while (first != last)
                 {
-                    this->_rbt.insert(*first);
+                    this->_rbt.insert(_rbt.get_root(), *first);
                     ++first;
                 }
             }
@@ -310,15 +309,50 @@ namespace ft
                 return (this->_allocator.max_size());
             }
             /* --- ELEMENT ACCESS --- */
+            mapped_type & operator[](const key_type & k)
+            {
+                tree_node   *found_node = _rbt.search(k);
+
+                if (found_node == _rbt.get_nullnode())
+                {
+                    ft::pair<key_type, mapped_type>  new_pair;
+                    new_pair.first = k;
+                    value_type  pair_to_insert = new_pair;
+                    // reference to mapped type of inserted pair
+                    return (_rbt.insert(_rbt.get_root(), pair_to_insert)).first->value.second;
+                }
+                else
+                    return (found_node->value.second);
+            }
 
             /* --- MODIFIERS --- */
             // 1. insert: single element
             ft::pair<iterator, bool> insert(const value_type & val)
             {
-                ft::pair<tree_node*, bool> pair = _rbt.insert(val);
+                ft::pair<tree_node*, bool> pair = _rbt.insert(_rbt.get_root(), val);
                 return (ft::make_pair(iterator(pair.first, &this->_rbt), pair.second));
             }
+
             // 2. insert: with hint
+            iterator insert(iterator position, const value_type & val)
+            {
+                tree_node    *elem_at_position = _rbt.search(position->first);
+                tree_node    *next_elem = _rbt.successor(elem_at_position);
+                ft::pair<tree_node*, bool>   insert_ret;
+
+                if (_comp(position->first, val.first) && _comp(val.first, next_elem->value.first))
+                {
+                    insert_ret = _rbt.insert(position.current_node, val);
+                    return (iterator(insert_ret.first, &this->_rbt));
+                }
+                else
+                {
+                    insert_ret = _rbt.insert(_rbt.get_root(), val);
+                    return (iterator(insert_ret.first, &this->_rbt));
+                }
+                
+            }
+
             // 3. insert: range
             /* --- OBSERVERS --- */
             /* --- OPERATIONS --- */

@@ -81,87 +81,144 @@ int main(void)
     std::cout << "ELEMENT ACCESS" << std::endl;
     std::cout << "==============" << std::endl << std::endl;
 
+    ft::map<char, std::string>  mymap;
+
+    mymap['a'] = "an element";
+    mymap['b'] = "another element";
+    mymap['c'] = mymap['b'];
+
+    std::cout << "mymap['a'] is " << mymap['a'] << std::endl;
+    std::cout << "mymap['b'] is " << mymap['b'] << std::endl;
+    std::cout << "mymap['c'] is " << mymap['c'] << std::endl;
+    std::cout << "mymap['d'] is " << mymap['d'] << std::endl;
+
+    std::cout << "mymap now contains " << mymap.size() << " elements." << std::endl;
+
     std::cout << std::endl;
     std::cout << "=========" << std::endl;
     std::cout << "MODIFIERS" << std::endl;
     std::cout << "=========" << std::endl << std::endl;
 
-    std::cout << std::endl;
-    std::cout << "=========" << std::endl;
-    std::cout << "OBSERVERS" << std::endl;
-    std::cout << "=========" << std::endl << std::endl;
+    std::cout << "----- 1.1 Insert: single element" << std::endl;
+    ft::map<char, int>  insert_map;
+    display_map(insert_map);
+    insert_map.insert(ft::make_pair('a', 15));
+    display_map(insert_map);
+    insert_map.insert(ft::make_pair('z', 42));
+    display_map(insert_map);
+    insert_map.insert(ft::make_pair('d', 19));
+    insert_map.insert(ft::make_pair('x', 19));
+    insert_map.insert(ft::make_pair('b', 19));
+    display_map(insert_map);
 
     std::cout << std::endl;
-    std::cout << "==========" << std::endl;
-    std::cout << "OPERATIONS" << std::endl;
-    std::cout << "==========" << std::endl << std::endl;
+    std::cout << "----- 1.2 Insert: hint" << std::endl;
+    ft::map<char, int>::iterator    insert_map_it = --(--insert_map.end());
+    std::cout << "iterator is at: " << insert_map_it->first << std::endl;
+    insert_map.insert(insert_map_it, ft::make_pair('y', 19));
+    display_map(insert_map);
 
     std::cout << std::endl;
-    std::cout << "=========" << std::endl;
-    std::cout << "ITERATORS" << std::endl;
-    std::cout << "=========" << std::endl << std::endl;
+    std::cout << "----- 1.3 Insert: range" << std::endl;
 
-    ft::map<int, int>   iterators_map = generate_random_map<int, int>(10, 100);
-    ft::map<int, int>::iterator it_map_it = iterators_map.begin();
-    ft::map<int, int>::iterator it_map_ite = iterators_map.end();
-    std::cout << "display map with red black tree function: " << std::endl;
-    display_map(iterators_map);
-    std::cout << "display map with iterators" << std::endl;
-    while (it_map_it != it_map_ite)
-    {
-        std::cout << "[" << it_map_it->first << ":" << it_map_it->second << "]" << " ";
-        ++it_map_it;
-    }
+
     std::cout << std::endl;
+    std::cout << "----- 2.1 Erase: position -----" << std::endl;
 
-    std::cout << "----- Default constructor -----" << std::endl;
-    ft::map<int, int>::iterator original_it;
-    std::cout << "----- Assignation -----" << std::endl;
-    original_it = m.begin();
-    std::cout << "----- Copy constructor -----" << std::endl;
-    ft::map<int, int>::iterator it(original_it);
-    std::cout << "----- Equal comparison -----" << std::endl;
-    if (original_it == m.begin() && it == m.begin())
-        std::cout << "Default constructor, assignation and copy constructor worked" << std::endl;
-    std::cout << "----- Unequal comparison -----" << std::endl;
-    ++original_it;
-    if (original_it != it)
-        std::cout << "Iterators are not equal after incrementation" << std::endl;
-    std::cout << "----- * dereferencement -----" << std::endl;
-    std::cout << "map used is" << std::endl;
-    display_map(m);
-    std::cout << "first value: [" << (*it).first << ":" << (*it).second << "]" << std::endl;
-    std::cout << "----- -> dereferencement -----" << std::endl;
-    std::cout << "first value: [" << it->first << ":" << it->second << "]" << std::endl;
-    std::cout << "----- Pre increment -----" << std::endl;
-    ++it;
-    std::cout << "second value: [" << it->first << ":" << it->second << "]" << std::endl;
-    std::cout << "----- Post increment -----" << std::endl;
-    std::cout << "second value(post incr): [" << it->first << ":" << (it++)->second << "]" << std::endl;
-    std::cout << "third value: [" << it->first << ":" << it->second << "]" << std::endl;
-    std::cout << "----- Pre decrement -----" << std::endl;
-    --it;
-    std::cout << "second value: [" << it->first << ":" << it->second << "]" << std::endl;
-    std::cout << "----- Post decrement -----" << std::endl;
-    std::cout << "second value: [" << it->first << ":" << (it--)->second << "]" << std::endl;
-    std::cout << "first value: [" << it->first << ":" << it->second << "]" << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "----- 2.2 Erase: key -----" << std::endl;
+
+
+    std::cout << std::endl;
+    std::cout << "----- 2.3 Erase: range -----" << std::endl;
+
+
+    std::cout << std::endl;
+    std::cout << "----- 3. Swap -----" << std::endl;
+
+
+    std::cout << std::endl;
+    std::cout << "----- 4. Clear -----" << std::endl;
+
+    // std::cout << std::endl;
+    // std::cout << "=========" << std::endl;
+    // std::cout << "OBSERVERS" << std::endl;
+    // std::cout << "=========" << std::endl << std::endl;
+
+    // std::cout << std::endl;
+    // std::cout << "==========" << std::endl;
+    // std::cout << "OPERATIONS" << std::endl;
+    // std::cout << "==========" << std::endl << std::endl;
+
+    // std::cout << std::endl;
+    // std::cout << "=========" << std::endl;
+    // std::cout << "ITERATORS" << std::endl;
+    // std::cout << "=========" << std::endl << std::endl;
+
+    // ft::map<int, int>   iterators_map = generate_random_map<int, int>(10, 100);
+    // ft::map<int, int>::iterator it_map_it = iterators_map.begin();
+    // ft::map<int, int>::iterator it_map_ite = iterators_map.end();
+    // std::cout << "display map with red black tree function: " << std::endl;
+    // display_map(iterators_map);
+    // std::cout << "display map with iterators" << std::endl;
+    // while (it_map_it != it_map_ite)
+    // {
+    //     std::cout << "[" << it_map_it->first << ":" << it_map_it->second << "]" << " ";
+    //     ++it_map_it;
+    // }
+    // std::cout << std::endl;
+
+    // std::cout << "----- Default constructor -----" << std::endl;
+    // ft::map<int, int>::iterator original_it;
+    // std::cout << "----- Assignation -----" << std::endl;
+    // original_it = m.begin();
+    // std::cout << "----- Copy constructor -----" << std::endl;
+    // ft::map<int, int>::iterator it(original_it);
+    // std::cout << "----- Equal comparison -----" << std::endl;
+    // if (original_it == m.begin() && it == m.begin())
+    //     std::cout << "Default constructor, assignation and copy constructor worked" << std::endl;
+    // std::cout << "----- Unequal comparison -----" << std::endl;
+    // ++original_it;
+    // if (original_it != it)
+    //     std::cout << "Iterators are not equal after incrementation" << std::endl;
+    // std::cout << "----- * dereferencement -----" << std::endl;
+    // std::cout << "map used is" << std::endl;
+    // display_map(m);
+    // std::cout << "first value: [" << (*it).first << ":" << (*it).second << "]" << std::endl;
+    // std::cout << "----- -> dereferencement -----" << std::endl;
+    // std::cout << "first value: [" << it->first << ":" << it->second << "]" << std::endl;
+    // std::cout << "----- Pre increment -----" << std::endl;
+    // ++it;
+    // std::cout << "second value: [" << it->first << ":" << it->second << "]" << std::endl;
+    // std::cout << "----- Post increment -----" << std::endl;
+    // std::cout << "second value(post incr): [" << it->first << ":" << (it++)->second << "]" << std::endl;
+    // std::cout << "third value: [" << it->first << ":" << it->second << "]" << std::endl;
+    // std::cout << "----- Pre decrement -----" << std::endl;
+    // --it;
+    // std::cout << "second value: [" << it->first << ":" << it->second << "]" << std::endl;
+    // std::cout << "----- Post decrement -----" << std::endl;
+    // std::cout << "second value: [" << it->first << ":" << (it--)->second << "]" << std::endl;
+    // std::cout << "first value: [" << it->first << ":" << it->second << "]" << std::endl;
     
-    std::cout << std::endl;
-    std::cout << "=================" << std::endl;
-    std::cout << "REVERSE_ITERATORS" << std::endl;
-    std::cout << "=================" << std::endl << std::endl;
+    // std::cout << std::endl;
+    // std::cout << "=================" << std::endl;
+    // std::cout << "REVERSE_ITERATORS" << std::endl;
+    // std::cout << "=================" << std::endl << std::endl;
 
-    std::cout << "display with red-black tree function" << std::endl;
-    display_map(m);
-    ft::map<int, int>::reverse_iterator rev_it = m.rbegin();
-    ft::map<int, int>::reverse_iterator rev_ite = m.rend();
-    std::cout << "display with reverse iterators" << std::endl;
-    while (rev_it != rev_ite)
-    {
-        std::cout << "[" << (*rev_it).first << ":" << (*rev_it).second << "]" << " ";
-        ++rev_it;
-    }
-    std::cout << std::endl;
+    // std::cout << "display with red-black tree function" << std::endl;
+    // display_map(m);
+    // ft::map<int, int>::reverse_iterator rev_it = m.rbegin();
+    // ft::map<int, int>::reverse_iterator rev_ite = m.rend();
+    // std::cout << "display with reverse iterators" << std::endl;
+    // while (rev_it != rev_ite)
+    // {
+    //     std::cout << "[" << (*rev_it).first << ":" << (*rev_it).second << "]" << " ";
+    //     ++rev_it;
+    // }
+    // std::cout << std::endl;
+
+    return (0);
 }
 
 // int main(void)
