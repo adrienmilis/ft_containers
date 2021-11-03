@@ -221,14 +221,14 @@ namespace ft
                 return (*this);
             }
             pointer operator->() const {
-                return (_base_iterator._ptr);
+                return (_base_iterator.operator->());
             }
             reference operator[](difference_type n) const {
 				return (*(_base_iterator - n));
             }
             // template <class Iterator>
             friend bool operator==(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) {
-                return (lhs == rhs);
+                return (lhs._base_iterator == rhs._base_iterator);
             }
 
             // template <class Iterator>
@@ -238,22 +238,22 @@ namespace ft
 
             // template <class Iterator>
             friend bool operator<(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) {
-                return (lhs > rhs);
+                return (lhs._base_iterator > rhs._base_iterator);
             }
 
             // template <class Iterator>
             friend bool operator<=(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) {
-                return (lhs >= rhs);
+                return (lhs._base_iterator >= rhs._base_iterator);
             }
 
             // template <class Iterator>
             friend bool operator>(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) {
-                return (lhs < rhs);
+                return (lhs._base_iterator < rhs._base_iterator);
             }
 
             // template <class Iterator>
             friend bool operator>=(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) {
-                return (lhs <= rhs);
+                return (lhs._base_iterator <= rhs._base_iterator);
             }
     };
 

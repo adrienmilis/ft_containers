@@ -151,37 +151,80 @@ int main(void)
 
     foo['x']=100;
     foo['y']=200;
+    std::cout << "foo: ";
     display_map(foo);
 
     bar['a']=11;
     bar['b']=22;
     bar['c']=33;
+    std::cout << "bar: ";
     display_map(bar);
 
     foo.swap(bar);
 
     std::cout << "foo contains:" << std::endl;
-    for (ft::map<char,int>::iterator foo_it = foo.begin(); foo_it!=foo.end(); ++foo_it)
-        std::cout << foo_it->first << " => " << foo_it->second << std::endl;
+    display_map(foo);
+    std::cout << "foo size: " << foo.size() << std::endl;
 
     std::cout << "bar contains:" << std::endl;
-    for (ft::map<char,int>::iterator bar_it=bar.begin(); bar_it!=bar.end(); ++bar_it)
-        std::cout << bar_it->first << " => " << bar_it->second << std::endl;
+    display_map(bar);
+    std::cout << "bar size: " << bar.size() << std::endl;
 
     std::cout << std::endl;
     std::cout << "----- 4. Clear -----" << std::endl;
+    ft::map<char, int>  clear_map = erase_map;
+    display_map(clear_map);
+    clear_map.clear();
+    display_map(clear_map);
+    std::cout << "clear_map's size is " << clear_map.size() << std::endl;
+    clear_map.insert(ft::make_pair('c', 19));
+    display_map(clear_map);
 
-    // std::cout << std::endl;
-    // std::cout << "=========" << std::endl;
-    // std::cout << "OBSERVERS" << std::endl;
-    // std::cout << "=========" << std::endl << std::endl;
+    std::cout << std::endl;
+    std::cout << "=========" << std::endl;
+    std::cout << "OBSERVERS" << std::endl;
+    std::cout << "=========" << std::endl << std::endl;
+    std::cout << "----- 1. Key_comp -----" << std::endl;
+    ft::map<char,int> mymap_comp;
+
+    ft::map<char,int>::key_compare mycomp = mymap_comp.key_comp();
+
+    mymap_comp['a']=100;
+    mymap_comp['b']=200;
+    mymap_comp['c']=300;
+
+    std::cout << "mymap_comp contains:" << std::endl;
+
+    char highest_key = mymap_comp.rbegin()->first;     // key value of last element
+
+    ft::map<char,int>::iterator it_comp = mymap_comp.begin();
+    do {
+      std::cout << it_comp->first << " => " << it_comp->second << std::endl;
+    } while ( mycomp((*it_comp++).first, highest_key) );
+
+    std::cout << std::endl;
+    std::cout << "----- 2. Value_comp -----" << std::endl;
+    ft::map<char,int> mymap_value;
+
+    mymap_value['x']=1001;
+    mymap_value['y']=2002;
+    mymap_value['z']=3003;
+
+    std::cout << "mymap_value contains:" << std::endl;
+
+    ft::pair<char,int> highest = *mymap_value.rbegin();          // last element
+
+    ft::map<char,int>::iterator it_value = mymap_value.begin();
+    do {
+      std::cout << it_value->first << " => " << it_value->second << std::endl;
+    } while ( mymap_value.value_comp()(*it_value++, highest) );
 
     std::cout << std::endl;
     std::cout << "==========" << std::endl;
     std::cout << "OPERATIONS" << std::endl;
     std::cout << "==========" << std::endl << std::endl;
 
-    std::cout << "----- Find -----" << std::endl;
+    std::cout << "----- 1. Find -----" << std::endl;
     display_map(insert_map);
     ft::map<char, int>::iterator find_it = insert_map.find('b');
     std::cout << "[" << find_it->first << ":" << find_it->second << "]" << std::endl;
@@ -193,6 +236,23 @@ int main(void)
     if (find_it_notexist == insert_map.end())
         std::cout << "Could not find key [" << search << "] in map" << std::endl;
 
+    std::cout << std::endl;
+    std::cout << "----- 2. Count -----" << std::endl;
+    display_map(foo);
+    std::cout << "count a: " << foo.count('a') << std::endl;
+    std::cout << "count c: " << foo.count('c') << std::endl;
+    std::cout << "count x: " << foo.count('x') << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "----- 3. Lower_bound -----" << std::endl;
+
+
+    std::cout << std::endl;
+    std::cout << "----- 4. Upper_bound -----" << std::endl;
+
+
+    std::cout << std::endl;
+    std::cout << "----- 5. Equal_range -----" << std::endl;
     // std::cout << std::endl;
     // std::cout << "=========" << std::endl;
     // std::cout << "ITERATORS" << std::endl;

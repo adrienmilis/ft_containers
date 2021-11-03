@@ -356,6 +356,19 @@ namespace ft
                 std::cout << "[" << curr_node->value.first << ":" << curr_node->value.second << "]" << " ";
                 print_tree_sorted(curr_node->right);
             }
+            
+            node    *clear(node *t)
+            {
+                if (t == NULLNODE)
+                {
+                    this->_size = 0;
+                    return NULLNODE;
+                }
+                clear(t->left);
+                clear(t->right);
+                this->_allocator.deallocate(t, 1);
+                return (NULLNODE);
+            }
 
             RBT() {}
 
@@ -390,26 +403,16 @@ namespace ft
                 this->_allocator.deallocate(this->NULLNODE, 1);
             }
 
-            node    *clear(node *t)
+
+            void    clear_tree()
             {
-                if (t == NULLNODE)
-                {
-                    this->_size = 0;
-                    return NULL;
-                }
-                clear(t->left);
-                clear(t->right);
-                this->_allocator.deallocate(t, 1);
-                return (NULL);
+                _root = clear(_root);
             }
 
             RBT & operator=(RBT const & rhs)
             {
-                this->clear(_root);
-                this->_size = rhs._size;
-                std::cout << "operator = 1" << std::endl;
+                this->_root = this->clear(_root);
                 deep_copy(rhs._root, rhs);
-                std::cout << "operator = 2" << std::endl;
                 return (*this);
             }
 

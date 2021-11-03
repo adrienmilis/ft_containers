@@ -51,6 +51,28 @@ namespace ft
         public:
 
             /*  
+                =============
+                VALUE_COMPARE
+                =============
+            */
+            class value_compare : public std::binary_function<value_type, value_type, bool>
+            {
+                public:  // if protected, can map access it or does it have to be made public?
+                    Compare comp;
+                    value_compare(Compare c) : comp(c) {}   // we construct it with our key_compare
+                
+                    typedef std::binary_function<value_type, value_type, bool>  Base;
+                    typedef typename Base::result_type          result_type;
+                    typedef typename Base::first_argument_type  first_argument_type;
+                    typedef typename Base::second_argument_type second_argument_type;
+
+                    bool    operator()(const value_type & x, const value_type & y) const
+                    {
+                        return (comp(x.first, y.first));
+                    }
+            };
+
+            /*  
                 =========
                 ITERATORS
                 =========
@@ -240,7 +262,7 @@ namespace ft
             // the container preserves its current allocator
             map & operator=(const map & x)
             {
-                _rbt.clear(_rbt.get_root());
+                _rbt.clear_tree();
                 this->_rbt = x._rbt;
                 this->_comp = x._comp;
                 return (*this);
@@ -392,14 +414,12 @@ namespace ft
             {
                 map tmp;
                 
-                std::cout << "test" << std::endl;
                 tmp._allocator = this->_allocator;
                 tmp._comp = this->_comp;
                 tmp._rbt = this->_rbt;
 
                 this->_allocator = x._allocator;
                 this->_comp = x._comp;
-                std::cout << "test2" << std::endl;
                 this->_rbt = x._rbt;
 
                 x._allocator = tmp._allocator;
@@ -407,10 +427,28 @@ namespace ft
                 x._rbt = tmp._rbt;
             }
 
-            // 4.
+            // 4. Clear
+            void    clear()
+            {
+                this->_rbt.clear_tree();
+            }
 
             /* --- OBSERVERS --- */
+            // 1. Key_comp
+            key_compare key_comp() const
+            {
+                return (this->_comp);
+            }
+
+            // 2. Value_comp
+            value_compare   value_comp() const
+            {
+                value_compare   value_comp(this->_comp);
+                return (value_comp);
+            }
+
             /* --- OPERATIONS --- */
+            // 1. Find
             iterator    find(const key_type & k)
             {
                 tree_node   *found = _rbt.search(k);
@@ -428,8 +466,34 @@ namespace ft
                 else
                     return const_iterator(found, &this->_rbt);
             }
-            /* --- ALLOCATOR --- */
 
+            // 2. Count
+            size_type   count(const key_type & k) const
+            {
+                return (_rbt.search(k) == _rbt.get_nullnode()) ? 0 : 1;
+            }
+
+            // 3. Lower_bound
+            // returns either an iterator on k or on the key that goes right after
+            iterator    lower_bound(const key_type & k)
+            {
+                
+            }
+
+            // const_iterator  lower_bound(const key_type & k) const
+            // {
+
+            // }
+
+            // 4. Upper_bound
+
+            // 5. Equal_range
+
+            /* --- ALLOCATOR --- */
+            allocator_type  get_allocator() const
+            {
+                return (this->_allocator);
+            }
 
     };
 }
