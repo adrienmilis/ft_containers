@@ -520,8 +520,10 @@ namespace ft
             }
 
             /* --- MODIFIERS --- */
+            // 1.1 Assign: range
             template <class InputIterator>
-            void assign(InputIterator first, InputIterator last)
+            void assign(InputIterator first, InputIterator last,
+                typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = nullptr)
             {
                 long    distance = std::distance(first, last);
                 int     i;
@@ -545,6 +547,29 @@ namespace ft
                 this->_size = distance;
             }
 
+            // 1.2 Assign: fill
+            void    assign(size_type n, const value_type & val)
+            {
+                size_type   i;
+
+                this->clear();
+                // reallocation only if new vector size > current vector capacity
+                if (n > this->_capacity)
+                {
+                    this->_allocator.deallocate(this->_data, this->_capacity);
+                    this->_data = this->_allocator.allocate(n);
+                    this->_capacity = n;
+                }
+                // Remplacer (construire)
+                i = 0;
+                while (i != n)
+                {
+                    this->_allocator.construct(this->_data + i, val);
+                    i++;
+                }
+                this->_size = n;
+            }
+
             void    push_back(const value_type & val)
             {
                 /* 
@@ -555,7 +580,8 @@ namespace ft
                     this->_allocator.construct(this->_data + this->_size, val);
                 else
                 {
-                    pointer new_data = this->_allocator.allocate(this->_capacity * 2);
+                    size_type   new_capacity = (this->_capacity > 0) ? this->_capacity * 2 : 1;
+                    pointer new_data = this->_allocator.allocate(new_capacity);
                     
                     for (size_type i = 0; i < this->_size; i++)
                         this->_allocator.construct(new_data + i, this->_data[i]);
@@ -563,7 +589,7 @@ namespace ft
                     for (size_type i = 0; i < this->_size ; i++)
                         this->_allocator.destroy(this->_data + i);
                     this->_allocator.deallocate(this->_data, this->_capacity);
-                    this->_capacity *= 2;
+                    this->_capacity = new_capacity;
                     this->_data = new_data;
                 }
                 this->_size++;
@@ -681,7 +707,7 @@ namespace ft
             // insert: range
             template <class InputIterator>
             void insert(iterator position, InputIterator first, InputIterator last, 
-                typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = NULL)
+                typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = nullptr)
             {
                 size_type   n = std::distance(first, last);
                 if (this->_size + n >= this->_capacity)

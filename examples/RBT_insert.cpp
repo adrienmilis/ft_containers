@@ -2,7 +2,7 @@
 #include <functional>
 #include <cstdlib>  // exit
 #include "map/RBT.hpp"
-#include "utils.hpp"
+#include "../utils/utils.hpp"
 
 int main()
 {
