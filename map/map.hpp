@@ -403,10 +403,7 @@ namespace ft
             void    erase(iterator first, iterator last)
             {
                 while (first != last)
-                {
-                    this->erase(first);
-                    ++first;
-                }
+                    this->erase(first++);
             }
 
             // 3. Swap
@@ -477,17 +474,66 @@ namespace ft
             // returns either an iterator on k or on the key that goes right after
             iterator    lower_bound(const key_type & k)
             {
-                
+                map::iterator   it = this->begin();
+                map::iterator   ite = this->end();
+
+                while (it != ite && this->_comp(it->first, k))   // while current key < k
+                    ++it;
+                return (it);
             }
 
-            // const_iterator  lower_bound(const key_type & k) const
-            // {
+            const_iterator  lower_bound(const key_type & k) const
+            {
+                map::const_iterator   it = this->begin();
+                map::const_iterator   ite = this->end();
 
-            // }
+                while (it != ite && this->_comp(it->first, k))   // while current key < k
+                    ++it;
+                return (it);
+            }
 
             // 4. Upper_bound
+            iterator    upper_bound(const key_type & k)
+            {
+                map::iterator   it = this->begin();
+                map::iterator   ite = this->end();
 
+                while (it != ite &&
+                    (this->_comp(it->first, k) ||
+                    (!_comp(it->first, k) && !_comp(k, it->first))))
+                    ++it;
+                return (it);
+            }
+
+            const_iterator  upper_bound(const key_type & k) const
+            {
+                map::const_iterator   it = this->begin();
+                map::const_iterator   ite = this->end();
+
+                while (it != ite &&
+                    (this->_comp(it->first, k) ||
+                    (!_comp(it->first, k) && !_comp(k, it->first))))
+                    ++it;
+                return (it);
+            }
             // 5. Equal_range
+            pair<iterator, iterator>    equal_range(const key_type & k)
+            {
+                pair<iterator, iterator>    pair;
+
+                pair.first = this->lower_bound(k);
+                pair.second = this->upper_bound(k);
+                return (pair);
+            }
+
+            pair<const_iterator, const_iterator>    equal_range(const key_type & k) const
+            {
+                pair<const_iterator, const_iterator>    pair;
+
+                pair.first = this->lower_bound(k);
+                pair.second = this->upper_bound(k);
+                return (pair);
+            }
 
             /* --- ALLOCATOR --- */
             allocator_type  get_allocator() const
