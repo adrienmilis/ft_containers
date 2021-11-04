@@ -845,19 +845,21 @@ namespace ft
 
             void    swap(vector & x)
             {
-                vector  tmp;
+                pointer     tmp;
+                size_type   tmp_size;
+                size_type   tmp_capacity;
 
-                tmp._data = this->_data;
-                tmp._size = this->_size;
-                tmp._capacity = this->_capacity;
+                tmp = this->_data;
+                tmp_size = this->_size;
+                tmp_capacity = this->_capacity;
 
                 this->_data = x._data;
                 this->_size = x._size;
                 this->_capacity = x._capacity;
 
-                x._data = tmp._data;
-                x._size = tmp._size;
-                x._capacity = tmp._capacity;
+                x._data = tmp;
+                x._size = tmp_size;
+                x._capacity = tmp_capacity;
 
             }
 
