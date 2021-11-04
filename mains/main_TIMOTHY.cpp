@@ -1415,7 +1415,7 @@ std::cout << "----------MINE_INSERT-----------" << std::endl;
   it = myvector.begin();
 
   ft::vector<int> anothervector (2,400);
-  myvector.insert(it+2,anothervector.begin(),anothervector.end());
+  myvector.insert(myvector.begin()+2,anothervector.begin(),anothervector.end());
 
 ft::vector<int> vec;
 vec.push_back(19);
@@ -1454,7 +1454,7 @@ std::cout << "----------STL_IT_OP[]_OP+-----------" << std::endl;
 }
 std::cout << "----------MINE_IT_OP[]_OP+_OP-_OP+=_OP-=()-----------" << std::endl;
 {
-	    ft::vector<int>v1;
+	  ft::vector<int>v1;
 		v1.push_back(1); 
 		v1.push_back(2); 
 		v1.push_back(3); 

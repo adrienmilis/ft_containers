@@ -3,7 +3,6 @@
 
 #include <memory>
 #include <stdexcept>
-#include <algorithm>
 #include "../utils/utils.hpp"
 
 namespace ft
@@ -303,7 +302,7 @@ namespace ft
 				    typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = NULL)
                 : _allocator(alloc)
             {
-                long    distance = std::distance(first, last);
+                long    distance = last - first;
                 int     i;
 
                 this->_data = this->_allocator.allocate(distance);
@@ -525,7 +524,7 @@ namespace ft
             void assign(InputIterator first, InputIterator last,
                 typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = nullptr)
             {
-                long    distance = std::distance(first, last);
+                long    distance = last - first;
                 int     i;
 
                 this->clear();
@@ -709,7 +708,7 @@ namespace ft
             void insert(iterator position, InputIterator first, InputIterator last, 
                 typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = nullptr)
             {
-                size_type   n = std::distance(first, last);
+                size_type   n = last - first;
                 if (this->_size + n >= this->_capacity)
                 {
                     pointer new_data;
@@ -748,16 +747,16 @@ namespace ft
                 }
                 else
                 {
-                    size_type   idx = this->_size - 1 + n;
-                    size_type   position_index = position - this->begin();
-                    while (idx - n >= position_index) {
-                        this->_data[idx] = this->_data[idx - n];
-                        --idx;
+                    vector::iterator    ite = this->end() - 1;
+                    while (ite != position - 1)
+                    {
+                        *(ite + 2) = *ite;
+                        --ite;
                     }
-                    idx = position_index;
-                    while (first != last) {
-                        this->_allocator.construct(this->_data + idx, *first);
-                        ++idx;
+                    while (first != last)
+                    {
+                        *position = *first;
+                        ++position;
                         ++first;
                     }
                 }
