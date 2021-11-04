@@ -5,7 +5,7 @@
 #include <functional>   // std::less
 #include <iterator>     // std::bidirectional_iterator_tag
 #include "RBT.hpp"
-#include "../utils/utils.hpp"
+#include "utils.hpp"
 
 namespace ft
 {

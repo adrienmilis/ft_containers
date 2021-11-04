@@ -2,7 +2,7 @@
 # define RBT_HPP
 
 #include <iostream>
-#include "../utils/utils.hpp"
+#include "utils.hpp"
 
 #define RED     1
 #define BLACK   0

@@ -14,10 +14,10 @@
 	#include <vector>
 	namespace ft = std;
 #else
-	#include "../map/map.hpp"
-	#include "../stack/stack.hpp"
-	#include "../vector/vector.hpp"
-	#include "../utils/utils.hpp"
+	#include "../map.hpp"
+	#include "../stack.hpp"
+	#include "../vector.hpp"
+	#include "../utils.hpp"
 #endif
 
 
@@ -339,10 +339,10 @@ int main()
 #include <vector>
 #include <sys/time.h>
 
-#include "../map/map.hpp"
-#include "../stack/stack.hpp"
-#include "../vector/vector.hpp"
-#include "../utils/utils.hpp"
+#include "../map.hpp"
+#include "../stack.hpp"
+#include "../vector.hpp"
+#include "../utils.hpp"
 
 
 
@@ -456,9 +456,9 @@ int main()
 	#include <vector>
 	namespace ft = std;
 #else
-	#include "../map/map.hpp"
-	#include "../stack/stack.hpp"
-	#include "../vector/vector.hpp"
+	#include "../map.hpp"
+	#include "../stack.hpp"
+	#include "../vector.hpp"
 #endif
 
 #include <stdlib.h>
@@ -603,10 +603,10 @@ int main(int argc, char** argv) {
 #include <stack>
 #include <vector>
 
-#include "../map/map.hpp"
-#include "../stack/stack.hpp"
-#include "../vector/vector.hpp"
-#include "../utils/utils.hpp"
+#include "../map.hpp"
+#include "../stack.hpp"
+#include "../vector.hpp"
+#include "../utils.hpp"
 
 void test_vector();
 void test_map();
